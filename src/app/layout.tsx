@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: {
@@ -17,10 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="bg-jacksons-purple-400">
-        <Header />
-        {children}
-      </body>
+      <body className="bg-jacksons-purple-400">{children}</body>
     </html>
   );
 }
