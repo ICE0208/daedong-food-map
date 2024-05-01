@@ -5,7 +5,9 @@ import Link from "next/link";
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#F0F4F9] px-16 py-8">
-      <h1 className="mb-4 text-[44px] font-bold">대동밥 지도</h1>
+      <Link href="/">
+        <h1 className="mb-4 text-[44px] font-bold">대동밥 지도</h1>
+      </Link>
       <form
         className={cls(
           "relative mb-20 flex w-full max-w-[700px] flex-col items-center rounded-3xl bg-white px-16 py-8",
