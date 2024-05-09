@@ -1,19 +1,24 @@
+"use client";
+
 import React from "react";
 
 interface SVGButtonProps {
   size?: number;
   svg?: JSX.Element;
+  color?: string;
   onClick?: () => void;
 }
 
 export default function SVGButton({
   size = 4,
   svg = DefaultSVG,
+  color = "inherit",
   onClick = () => null,
 }: SVGButtonProps) {
   const buttonStyle = {
     width: `${size * 0.25}rem`,
     height: `${size * 0.25}rem`,
+    color,
   };
 
   return (
