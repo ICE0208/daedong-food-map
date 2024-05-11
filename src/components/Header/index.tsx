@@ -20,6 +20,10 @@ export default function Header() {
     router.push("/");
   };
 
+  const handleUserIconClick = () => {
+    router.push("/log-in");
+  };
+
   return (
     <div className="text-white" style={{ height: `${HEADER_HEIGHT}px` }}>
       <div
@@ -43,7 +47,7 @@ export default function Header() {
         </div>
         <div className="flex items-center space-x-5">
           <SVGButton svg={BellSVG} size={5} />
-          <SVGButton svg={UserSVG} size={5} />
+          <SVGButton onClick={handleUserIconClick} svg={UserSVG} size={5} />
           <SearchForm theme={isScrolled ? "dark" : "light"} />
         </div>
       </div>
