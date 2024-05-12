@@ -1,9 +1,8 @@
 "use client";
 
 import HeartSVG from "@/icons/HeartSVG";
-import SVGButton from "./SVGButton";
 import CommentSVG from "@/icons/CommentSVG";
-import { useRouter } from "next/navigation";
+import SVGButton from "@/components/SVGButton";
 
 interface RecentComment {
   author: string;
@@ -20,7 +19,7 @@ interface TalkPreviewProps {
   recentComment: RecentComment;
 }
 
-export default function TalkPreview({
+export default function TalkDetail({
   talkId,
   author,
   formattedData,
@@ -29,18 +28,9 @@ export default function TalkPreview({
   commentCount,
   recentComment,
 }: TalkPreviewProps) {
-  const router = useRouter();
-
-  const handleTalkPreview = () => {
-    router.push(`/talk/${talkId}`);
-  };
-
   return (
-    <div
-      className="w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-50 transition hover:scale-[1.01]"
-      onClick={handleTalkPreview}
-    >
-      <div className="p-6 pb-3">
+    <div className="w-full overflow-hidden rounded-xl bg-neutral-50 transition">
+      <div className="p-6 pb-4">
         {/* 프로필 */}
         <div className="flex items-center gap-3">
           <div className="aspect-square w-12 rounded-full bg-blue-300"></div>
@@ -66,12 +56,6 @@ export default function TalkPreview({
             <span>{commentCount}</span>
           </div>
         </div>
-      </div>
-      {/* 최근 댓글 */}
-      <div className="overflow-hidden text-ellipsis text-nowrap bg-neutral-300 px-6 py-2">
-        <span className="font-semibold">최근 댓글 | </span>
-        <span className="font-semibold">{recentComment.author} : </span>
-        <span>{recentComment.content}</span>
       </div>
     </div>
   );
