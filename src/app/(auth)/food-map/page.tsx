@@ -15,8 +15,8 @@ export default function FoodMapPage() {
   });
 
   return (
-    <div className="w-full p-4">
-      <div className="h-[600px] w-full overflow-hidden rounded-xl bg-neutral-100">
+    <div className="flex w-full flex-col items-center px-24 py-8">
+      <div className="h-[600px] w-full max-w-[1200px] overflow-hidden rounded-xl bg-neutral-100">
         <KakaoMap lat={position.lat} lng={position.lng} />
       </div>
       <CurrentPositionButton setPosition={setPosition} />
