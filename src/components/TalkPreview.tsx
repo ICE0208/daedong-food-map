@@ -3,6 +3,7 @@
 import HeartSVG from "@/icons/HeartSVG";
 import SVGButton from "./SVGButton";
 import CommentSVG from "@/icons/CommentSVG";
+import { useRouter } from "next/navigation";
 
 interface RecentComment {
   author: string;
@@ -10,6 +11,7 @@ interface RecentComment {
 }
 
 interface TalkPreviewProps {
+  talkId: number;
   author: string;
   formattedData: string;
   content: string;
@@ -19,6 +21,7 @@ interface TalkPreviewProps {
 }
 
 export default function TalkPreview({
+  talkId,
   author,
   formattedData,
   content,
@@ -26,8 +29,17 @@ export default function TalkPreview({
   commentCount,
   recentComment,
 }: TalkPreviewProps) {
+  const router = useRouter();
+
+  const handleTalkPreview = () => {
+    router.push(`/talk/${talkId}`);
+  };
+
   return (
-    <div className="w-full overflow-hidden rounded-xl bg-neutral-50">
+    <div
+      className="w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-50 transition hover:scale-[1.01]"
+      onClick={handleTalkPreview}
+    >
       <div className="p-6 pb-3">
         {/* 프로필 */}
         <div className="flex items-center gap-3">

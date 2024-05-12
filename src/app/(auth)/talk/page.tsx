@@ -6,7 +6,8 @@ export default function TalkPage() {
       <div className="flex w-full max-w-[800px] flex-col gap-4">
         {tempData.map((data, index) => (
           <TalkPreview
-            key={index}
+            key={data.talkId}
+            talkId={data.talkId}
             author={data.author}
             formattedData={data.formattedData}
             content={data.content}
@@ -22,6 +23,7 @@ export default function TalkPage() {
 
 const tempData = [
   {
+    talkId: 1,
     author: "빛나는 호랑이",
     formattedData: "24/04/12 - 19:21",
     content:
@@ -34,6 +36,7 @@ const tempData = [
     },
   },
   {
+    talkId: 2,
     author: "신비로운 사슴",
     formattedData: "24/04/13 - 10:45",
     content: "요즘 강남에서 유명한 디저트 카페 추천해주세요!",
@@ -45,6 +48,7 @@ const tempData = [
     },
   },
   {
+    talkId: 3,
     author: "작은 별",
     formattedData: "24/04/14 - 15:30",
     content: "강남에서 야외 산책로가 있는 곳이 어디인지 아시나요?",
@@ -56,6 +60,7 @@ const tempData = [
     },
   },
   {
+    talkId: 4,
     author: "해맑은 바다",
     formattedData: "24/04/15 - 12:00",
     content: "강남에서 쇼핑하기 좋은 곳이 있을까요?",
@@ -67,6 +72,7 @@ const tempData = [
     },
   },
   {
+    talkId: 5,
     author: "모험을 꿈꾸는 곰",
     formattedData: "24/04/16 - 09:00",
     content: "강남 근처에 볼 만한 관광지가 있을까요?",
