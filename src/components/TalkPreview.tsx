@@ -28,7 +28,7 @@ export default function TalkPreview({
 }: TalkPreviewProps) {
   return (
     <div className="w-full overflow-hidden rounded-xl bg-neutral-50">
-      <div className="p-4 pb-3">
+      <div className="p-6 pb-3">
         {/* 프로필 */}
         <div className="flex items-center gap-3">
           <div className="aspect-square w-12 rounded-full bg-blue-300"></div>
@@ -56,7 +56,7 @@ export default function TalkPreview({
         </div>
       </div>
       {/* 최근 댓글 */}
-      <div className="overflow-hidden text-ellipsis text-nowrap bg-neutral-300 px-4 py-2">
+      <div className="overflow-hidden text-ellipsis text-nowrap bg-neutral-300 px-6 py-2">
         <span className="font-semibold">최근 댓글 | </span>
         <span className="font-semibold">{recentComment.author} : </span>
         <span>{recentComment.content}</span>

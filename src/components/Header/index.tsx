@@ -28,7 +28,7 @@ export default function Header() {
     <div className="text-white" style={{ height: `${HEADER_HEIGHT}px` }}>
       <div
         className={cls(
-          "fixed flex w-full items-center justify-between bg-white bg-opacity-0 px-4",
+          "fixed z-50 flex w-full items-center justify-between bg-white bg-opacity-0 px-4",
           "transition-all duration-300 ease-in-out",
           `${isScrolled && "bg-opacity-100 text-black"}`,
         )}
