@@ -2,12 +2,6 @@
 
 import HeartSVG from "@/icons/HeartSVG";
 import SVGButton from "./SVGButton";
-import CommentSVG from "@/icons/CommentSVG";
-
-interface RecentComment {
-  author: string;
-  content: string;
-}
 
 interface ReviewPreviewProps {
   author: string;
@@ -48,7 +42,7 @@ export default function ReviewPreview({
         {/* 평점*/}
         <div className="text-[17px]">
           <span className="font-semibold">{"평점: "}</span>
-          <span>{rate}</span>
+          <RateStarDisplay rate={rate} />
         </div>
         <div className="my-2" />
 
@@ -67,5 +61,28 @@ export default function ReviewPreview({
         </div>
       </div>
     </div>
+  );
+}
+
+interface RateStarDisplayProps {
+  rate: number;
+}
+
+function RateStarDisplay({ rate }: RateStarDisplayProps) {
+  // 평점(rate)은 5점 만점이므로, 만점을 100% 기준으로 맞춫기 위하여 x20을 해주었습니다.
+  const percentage = rate * 20;
+
+  return (
+    <span className="space-x-1 text-inherit">
+      <span>{(Math.floor(rate * 10) / 10).toFixed(1)}</span>
+      <span
+        style={{
+          backgroundImage: `linear-gradient(to right, #ffdd47 ${percentage}%, #cbcbcb ${percentage}%)`,
+        }}
+        className="bg-clip-text"
+      >
+        <span className="text-[#ffffff00]">★★★★★</span>
+      </span>
+    </span>
   );
 }

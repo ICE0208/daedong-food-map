@@ -49,7 +49,7 @@ const tempData = [
   {
     author: "산책하는 강아지",
     restaurantName: "OO 브런치",
-    rate: 4,
+    rate: 4.5,
     formattedData: "24/04/17 - 10:15",
     content: "뷰가 좋고 음식 맛도 괜찮아요.",
     heartCount: 6,
@@ -65,9 +65,9 @@ const tempData = [
   {
     author: "책을 읽는 도깨비",
     restaurantName: "OO 도서관 카페",
-    rate: 4,
+    rate: 3.5,
     formattedData: "24/04/19 - 16:20",
-    content: "조용하고 분위기가 좋아요. 커피도 맛있습니다.",
+    content: "커피는 괜찮은데 좀 시끄럽네요.",
     heartCount: 7,
   },
   {
