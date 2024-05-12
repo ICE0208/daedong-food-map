@@ -1,8 +1,15 @@
 import ReviewPreview from "@/components/ReviewPreview";
-import TalkPreview from "@/components/TalkPreview";
-import reviewData from "@/mocks/reviewData";
+import { default as reviewMockData } from "@/mocks/reviewData";
 
-export default function ReviewPage() {
+const getReviewData = async () => {
+  return reviewMockData;
+};
+
+export default async function ReviewPage() {
+  const reviewData = await getReviewData();
+
+  console.log(reviewData);
+
   return (
     <main className="flex justify-center px-24 py-8">
       <div className="flex w-full max-w-[800px] flex-col gap-4">

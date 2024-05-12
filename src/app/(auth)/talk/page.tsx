@@ -1,7 +1,13 @@
 import TalkPreview from "@/components/TalkPreview";
-import talkData from "@/mocks/talkData";
+import { default as talkMockData } from "@/mocks/talkData";
 
-export default function TalkPage() {
+const getTalkData = async () => {
+  return talkMockData;
+};
+
+export default async function TalkPage() {
+  const talkData = await getTalkData();
+
   return (
     <main className="flex justify-center px-24 py-8">
       <div className="flex w-full max-w-[800px] flex-col gap-4">
