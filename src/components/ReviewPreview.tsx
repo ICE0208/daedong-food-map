@@ -9,23 +9,23 @@ interface RecentComment {
   content: string;
 }
 
-interface TalkPreviewProps {
+interface ReviewPreviewProps {
   author: string;
   formattedData: string;
   content: string;
   heartCount: number;
-  commentCount: number;
-  recentComment: RecentComment;
+  restaurantName: string;
+  rate: number;
 }
 
-export default function TalkPreview({
+export default function ReviewPreview({
   author,
   formattedData,
   content,
   heartCount,
-  commentCount,
-  recentComment,
-}: TalkPreviewProps) {
+  restaurantName,
+  rate,
+}: ReviewPreviewProps) {
   return (
     <div className="w-full overflow-hidden rounded-xl bg-neutral-50">
       <div className="p-6 pb-3">
@@ -38,28 +38,33 @@ export default function TalkPreview({
           </div>
         </div>
         <div className="my-3" />
+
+        {/* 식당 이름 */}
+        <div className="text-[17px]">
+          <span className="font-semibold">{"식당 이름: "}</span>
+          <span>{restaurantName}</span>
+        </div>
+
+        {/* 평점*/}
+        <div className="text-[17px]">
+          <span className="font-semibold">{"평점: "}</span>
+          <span>{rate}</span>
+        </div>
+        <div className="my-2" />
+
         {/* 텍스트 부분 */}
         <div>
           <span className="whitespace-pre-wrap break-words">{content}</span>
         </div>
         <div className="my-2" />
-        {/* 좋아요, 댓글 아이콘, 개수 */}
+
+        {/* 좋아요 아이콘, 개수 */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-[1px]">
             <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
             <span>{heartCount}</span>
           </div>
-          <div className="flex items-center gap-[1px]">
-            <SVGButton svg={CommentSVG} size={5} color="rgb(72, 72, 72)" />
-            <span>{commentCount}</span>
-          </div>
         </div>
-      </div>
-      {/* 최근 댓글 */}
-      <div className="overflow-hidden text-ellipsis text-nowrap bg-neutral-300 px-6 py-2">
-        <span className="font-semibold">최근 댓글 | </span>
-        <span className="font-semibold">{recentComment.author} : </span>
-        <span>{recentComment.content}</span>
       </div>
     </div>
   );
