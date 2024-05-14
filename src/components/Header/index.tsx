@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SVGButton from "../SVGButton";
 import SearchForm from "./SearchForm";
-import { BellSVG, UserSVG } from "@/icons";
 import localFont from "next/font/local";
+import BellSVG from "@/icons/BellSVG";
+import UserSVG from "@/icons/UserSVG";
 
 const HEADER_HEIGHT = 70;
 

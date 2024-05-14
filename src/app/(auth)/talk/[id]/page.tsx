@@ -1,8 +1,9 @@
 import { default as talkMockData } from "@/mocks/talkData";
 import { redirect } from "next/navigation";
 
-import Comment from "./components/Comment";
+import CommentWithReplies from "./components/CommentWithReplies";
 import TalkDetail from "./components/TalkDetail";
+import CommentsArea from "./components/CommentsArea";
 
 interface TalkDetailPageProps {
   params: {
@@ -61,17 +62,7 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
             </div>
           </form>
           <div className="my-2" />
-          {detailTalkData.comments.length > 0 ? (
-            <div className="space-y-3">
-              {detailTalkData.comments.map((comment, index) => (
-                <Comment key={index} {...comment} />
-              ))}
-            </div>
-          ) : (
-            <div className="flex justify-center pb-12 pt-4 text-xl">
-              댓글이 없습니다. 😭
-            </div>
-          )}
+          <CommentsArea comments={detailTalkData.comments} />
         </div>
       </div>
     </main>

@@ -2,18 +2,18 @@
 
 import React from "react";
 
-interface SVGButtonProps {
+type SVGButtonProps = {
   size?: number;
   svg?: JSX.Element;
   color?: string;
-  onClick?: () => void;
-}
+} & React.HTMLAttributes<HTMLButtonElement>;
 
 export default function SVGButton({
   size = 4,
   svg = DefaultSVG,
   color = "inherit",
   onClick = () => null,
+  className,
 }: SVGButtonProps) {
   const buttonStyle = {
     width: `${size * 0.25}rem`,
@@ -22,7 +22,7 @@ export default function SVGButton({
   };
 
   return (
-    <button onClick={onClick} style={buttonStyle}>
+    <button className={className} onClick={onClick} style={buttonStyle}>
       {React.cloneElement(svg, { className: "h-full w-full" })}{" "}
       {/* SVG에 클래스를 적용하여 크기 조절 */}
     </button>

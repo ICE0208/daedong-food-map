@@ -1,5 +1,6 @@
 const reviewData = [
   {
+    reviewId: 1,
     author: "빛나는 호랑이",
     restaurantName: "xxx 국밥집",
     rate: 4,
@@ -8,6 +9,7 @@ const reviewData = [
     heartCount: 5,
   },
   {
+    reviewId: 2,
     author: "떠돌이 코끼리",
     restaurantName: "xx 규동",
     rate: 5,
@@ -16,6 +18,7 @@ const reviewData = [
     heartCount: 9,
   },
   {
+    reviewId: 3,
     author: "길 잃은 고양이",
     restaurantName: "OO 카페",
     rate: 3,
@@ -24,6 +27,7 @@ const reviewData = [
     heartCount: 3,
   },
   {
+    reviewId: 4,
     author: "산책하는 강아지",
     restaurantName: "OO 브런치",
     rate: 4.5,
@@ -32,6 +36,7 @@ const reviewData = [
     heartCount: 6,
   },
   {
+    reviewId: 5,
     author: "빵을 찾는 다람쥐",
     restaurantName: "OO 빵집",
     rate: 5,
@@ -40,6 +45,7 @@ const reviewData = [
     heartCount: 10,
   },
   {
+    reviewId: 6,
     author: "책을 읽는 도깨비",
     restaurantName: "OO 도서관 카페",
     rate: 3.5,
@@ -48,6 +54,7 @@ const reviewData = [
     heartCount: 7,
   },
   {
+    reviewId: 7,
     author: "산책하는 산양",
     restaurantName: "OO 산속 식당",
     rate: 5,
@@ -56,6 +63,7 @@ const reviewData = [
     heartCount: 8,
   },
   {
+    reviewId: 8,
     author: "빛나는 별",
     restaurantName: "OO 스테이크집",
     rate: 4,
@@ -64,6 +72,7 @@ const reviewData = [
     heartCount: 6,
   },
   {
+    reviewId: 9,
     author: "하늘을 날다 새",
     restaurantName: "OO 해산물 요리",
     rate: 5,

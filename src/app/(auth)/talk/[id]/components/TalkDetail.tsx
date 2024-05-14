@@ -3,6 +3,8 @@
 import HeartSVG from "@/icons/HeartSVG";
 import CommentSVG from "@/icons/CommentSVG";
 import SVGButton from "@/components/SVGButton";
+import EtcButton from "@/components/buttons/EtcButton";
+import { useCallback, useEffect, useState } from "react";
 
 interface RecentComment {
   author: string;
@@ -28,18 +30,46 @@ export default function TalkDetail({
   commentCount,
   recentComment,
 }: TalkPreviewProps) {
+  const [modalActive, setModalActive] = useState(false);
+
+  const windowClick = useCallback((event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (target.id !== "talk-detail-etc-button") {
+      setModalActive(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("click", windowClick);
+    return () => window.removeEventListener("click", windowClick);
+  }, [windowClick]);
+
   return (
-    <div className="w-full overflow-hidden rounded-xl bg-neutral-50 transition">
+    <div className="w-full rounded-xl bg-neutral-50 transition">
       <div className="p-6 pb-4">
         {/* 프로필 */}
         <div className="flex items-center gap-3">
-          <div className="aspect-square w-12 rounded-full bg-blue-300"></div>
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold">{author}</span>
+          <div className="aspect-square w-12 flex-none rounded-full bg-blue-300"></div>
+          <div className="flex flex-1 flex-col overflow-hidden">
+            <span className="overflow-hidden text-ellipsis text-lg font-semibold">
+              {author}
+            </span>
             <span className="text-sm">{formattedData}</span>
+          </div>
+          <div className="flex-none">
+            <EtcButton
+              id="talk-detail-etc-button"
+              size={5}
+              onClick={() => setModalActive(true)}
+              isModalActive={modalActive}
+              reportFn={() => console.log(`잡담 ${talkId}를 신고합니다`)}
+              editFn={() => console.log(`잡담 ${talkId}를 수정합니다`)}
+              deleteFn={() => console.log(`잡담 ${talkId}를 삭제합니다`)}
+            />
           </div>
         </div>
         <div className="my-3" />
+
         {/* 텍스트 부분 */}
         <div>
           <span className="whitespace-pre-wrap break-words">{content}</span>
