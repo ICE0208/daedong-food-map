@@ -1,11 +1,14 @@
 import Comment from "./Comment";
 
 interface CommentWithRepliesProps {
+  activeState: [number, React.Dispatch<React.SetStateAction<number>>];
+  commentId: number;
   author: string;
   formattedData: string;
   content: string;
   heartCount: number;
   replies: {
+    commentId: number;
     author: string;
     formattedData: string;
     content: string;
@@ -14,6 +17,8 @@ interface CommentWithRepliesProps {
 }
 
 export default function CommentWithReplies({
+  activeState,
+  commentId,
   author,
   formattedData,
   content,
@@ -23,6 +28,8 @@ export default function CommentWithReplies({
   return (
     <div className="space-y-3">
       <Comment
+        activeState={activeState}
+        commentId={commentId}
         author={author}
         formattedData={formattedData}
         content={content}
@@ -32,6 +39,8 @@ export default function CommentWithReplies({
         return (
           <div key={index} className="pl-[120px]">
             <Comment
+              activeState={activeState}
+              commentId={reply.commentId}
               author={reply.author}
               formattedData={reply.formattedData}
               content={reply.content}

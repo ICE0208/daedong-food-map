@@ -3,6 +3,8 @@ import EtcButton from "@/components/buttons/EtcButton";
 import HeartSVG from "@/icons/HeartSVG";
 
 interface CommentProps {
+  activeState: [number, React.Dispatch<React.SetStateAction<number>>];
+  commentId: number;
   author: string;
   formattedData: string;
   content: string;
@@ -10,11 +12,15 @@ interface CommentProps {
 }
 
 export default function Comment({
+  activeState,
+  commentId,
   author,
   formattedData,
   content,
   heartCount,
 }: CommentProps) {
+  const [activeId, setActiveId] = activeState;
+
   return (
     <div className="flex flex-col rounded-xl bg-neutral-50 px-6 py-5">
       <div className="flex items-center gap-2">
@@ -26,7 +32,11 @@ export default function Comment({
           <span className="text-[12px]">{formattedData}</span>
         </div>
         <div className="flex-none">
-          <EtcButton size={5} />
+          <EtcButton
+            size={5}
+            onClick={() => setActiveId(commentId)}
+            isModalActive={commentId === activeId}
+          />
         </div>
       </div>
       <div className="my-[4px]" />

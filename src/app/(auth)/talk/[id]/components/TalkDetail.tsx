@@ -30,7 +30,7 @@ export default function TalkDetail({
   recentComment,
 }: TalkPreviewProps) {
   return (
-    <div className="w-full overflow-hidden rounded-xl bg-neutral-50 transition">
+    <div className="w-full rounded-xl bg-neutral-50 transition">
       <div className="p-6 pb-4">
         {/* 프로필 */}
         <div className="flex items-center gap-3">

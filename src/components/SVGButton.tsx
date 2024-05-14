@@ -2,12 +2,11 @@
 
 import React from "react";
 
-interface SVGButtonProps {
+type SVGButtonProps = {
   size?: number;
   svg?: JSX.Element;
   color?: string;
-  onClick?: () => void;
-}
+} & React.HTMLAttributes<HTMLButtonElement>;
 
 export default function SVGButton({
   size = 4,
