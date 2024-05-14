@@ -1,4 +1,4 @@
-import { SearchSVG } from "@/icons";
+import SearchSVG from "@/icons/SearchSVG";
 import SVGButton from "../SVGButton";
 import cls from "@/utils/cls";
 
