@@ -33,6 +33,7 @@ export default function Comment({
         </div>
         <div className="flex-none">
           <EtcButton
+            id="comment-etc-button"
             size={5}
             onClick={() => setActiveId(commentId)}
             // ! 테스트용 type 지정, 추후 수정 필요

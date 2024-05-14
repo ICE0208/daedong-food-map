@@ -4,6 +4,7 @@ import HeartSVG from "@/icons/HeartSVG";
 import CommentSVG from "@/icons/CommentSVG";
 import SVGButton from "@/components/SVGButton";
 import EtcButton from "@/components/buttons/EtcButton";
+import { useCallback, useEffect, useState } from "react";
 
 interface RecentComment {
   author: string;
@@ -29,6 +30,21 @@ export default function TalkDetail({
   commentCount,
   recentComment,
 }: TalkPreviewProps) {
+  const [modalActive, setModalActive] = useState(false);
+
+  const windowClick = useCallback((event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    console.log("hi9");
+    if (target.id !== "talk-detail-etc-button") {
+      setModalActive(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("click", windowClick);
+    return () => window.removeEventListener("click", windowClick);
+  }, [windowClick]);
+
   return (
     <div className="w-full rounded-xl bg-neutral-50 transition">
       <div className="p-6 pb-4">
@@ -42,7 +58,15 @@ export default function TalkDetail({
             <span className="text-sm">{formattedData}</span>
           </div>
           <div className="flex-none">
-            <EtcButton size={5} />
+            <EtcButton
+              id="talk-detail-etc-button"
+              size={5}
+              onClick={() => setModalActive(true)}
+              isModalActive={modalActive}
+              reportFn={() => console.log(`잡담 ${talkId}를 신고합니다`)}
+              editFn={() => console.log(`잡담 ${talkId}를 수정합니다`)}
+              deleteFn={() => console.log(`잡담 ${talkId}를 삭제합니다`)}
+            />
           </div>
         </div>
         <div className="my-3" />

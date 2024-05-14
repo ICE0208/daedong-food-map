@@ -5,6 +5,10 @@ import SVGButton from "./SVGButton";
 import CommentSVG from "@/icons/CommentSVG";
 import { useRouter } from "next/navigation";
 import EtcButton from "./buttons/EtcButton";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { talkPreviewActiveModalState } from "@/app/atoms";
+import withStopPropagation from "@/utils/withStopPropagation";
 
 interface RecentComment {
   author: string;
@@ -36,6 +40,26 @@ export default function TalkPreview({
     router.push(`/talk/${talkId}`);
   };
 
+  const [modalActive, setModalActive] = useRecoilState(
+    talkPreviewActiveModalState,
+  );
+  const resetModalActive = useResetRecoilState(talkPreviewActiveModalState);
+
+  const windowClick = useCallback(
+    (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.id !== "talk-preview-etc-button") {
+        setModalActive(-1);
+      }
+    },
+    [setModalActive],
+  );
+
+  useEffect(() => {
+    window.addEventListener("click", windowClick);
+    return () => window.removeEventListener("click", windowClick);
+  }, [windowClick]);
+
   return (
     <div
       className="w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-50 transition hover:scale-[1.01]"
@@ -52,7 +76,24 @@ export default function TalkPreview({
             <span className="text-sm">{formattedData}</span>
           </div>
           <div className="flex-none">
-            <EtcButton size={5} />
+            <EtcButton
+              id="talk-preview-etc-button"
+              size={5}
+              onClick={withStopPropagation(() => setModalActive(talkId))}
+              isModalActive={modalActive === talkId}
+              reportFn={withStopPropagation(() => {
+                resetModalActive();
+                console.log(`잡담 ${talkId}를 신고합니다`);
+              })}
+              editFn={withStopPropagation(() => {
+                resetModalActive();
+                console.log(`잡담 ${talkId}를 수정합니다`);
+              })}
+              deleteFn={withStopPropagation(() => {
+                resetModalActive();
+                console.log(`잡담 ${talkId}를 삭제합니다`);
+              })}
+            />
           </div>
         </div>
         <div className="my-3" />

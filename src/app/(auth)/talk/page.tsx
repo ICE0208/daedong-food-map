@@ -1,5 +1,7 @@
+import RecoilWrapper from "@/components/RecoilWrapper";
 import TalkPreview from "@/components/TalkPreview";
 import { default as talkMockData } from "@/mocks/talkData";
+import { RecoilRoot } from "recoil";
 
 const getTalkData = async () => {
   return talkMockData;
@@ -11,18 +13,20 @@ export default async function TalkPage() {
   return (
     <main className="flex justify-center px-24 py-8">
       <div className="flex w-full max-w-[800px] flex-col gap-4">
-        {talkData.map((data, index) => (
-          <TalkPreview
-            key={data.talkId}
-            talkId={data.talkId}
-            author={data.author}
-            formattedData={data.formattedData}
-            content={data.content}
-            heartCount={data.heartCount}
-            commentCount={data.commentCount}
-            recentComment={data.recentComment}
-          />
-        ))}
+        <RecoilWrapper>
+          {talkData.map((data, index) => (
+            <TalkPreview
+              key={data.talkId}
+              talkId={data.talkId}
+              author={data.author}
+              formattedData={data.formattedData}
+              content={data.content}
+              heartCount={data.heartCount}
+              commentCount={data.commentCount}
+              recentComment={data.recentComment}
+            />
+          ))}
+        </RecoilWrapper>
       </div>
     </main>
   );

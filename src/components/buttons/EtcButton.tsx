@@ -2,18 +2,21 @@
 
 import EtcSVG from "@/icons/EtcSVG";
 import SVGButton from "../SVGButton";
+import { MouseEvent } from "react";
 
 interface EtcButtonProps {
-  onClick?: () => void;
+  id?: string;
+  onClick?: (e: MouseEvent) => void;
   type?: "VIEWER" | "OWNER";
   size?: number;
   isModalActive?: boolean;
-  reportFn?: () => void;
-  editFn?: () => void;
-  deleteFn?: () => void;
+  reportFn?: (e: MouseEvent) => void;
+  editFn?: (e: MouseEvent) => void;
+  deleteFn?: (e: MouseEvent) => void;
 }
 
 export default function EtcButton({
+  id,
   onClick,
   type = "VIEWER",
   size,
@@ -23,12 +26,10 @@ export default function EtcButton({
   deleteFn,
 }: EtcButtonProps) {
   return (
-    <div
-      id="comment-etc-button"
-      className="relative cursor-pointer"
-      onClick={onClick}
-    >
-      <SVGButton className="pointer-events-none" svg={EtcSVG} size={size} />
+    <div className="relative">
+      <div id={id} className="cursor-pointer" onClick={onClick}>
+        <SVGButton className="pointer-events-none" svg={EtcSVG} size={size} />
+      </div>
       {isModalActive && (
         <div className="absolute right-0 top-[20px] flex w-32 flex-col items-stretch rounded-2xl bg-gray-200 py-2">
           {type === "VIEWER" ? (
