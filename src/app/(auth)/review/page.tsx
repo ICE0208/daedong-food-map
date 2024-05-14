@@ -9,8 +9,6 @@ const getReviewData = async () => {
 export default async function ReviewPage() {
   const reviewData = await getReviewData();
 
-  console.log(reviewData);
-
   return (
     <main className="flex justify-center px-24 py-8">
       <div className="flex w-full max-w-[800px] flex-col gap-4">

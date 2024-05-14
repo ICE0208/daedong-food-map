@@ -34,7 +34,6 @@ export default function TalkDetail({
 
   const windowClick = useCallback((event: MouseEvent) => {
     const target = event.target as HTMLElement;
-    console.log("hi9");
     if (target.id !== "talk-detail-etc-button") {
       setModalActive(false);
     }

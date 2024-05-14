@@ -39,9 +39,9 @@ export default function Comment({
             // ! 테스트용 type 지정, 추후 수정 필요
             type={author === "친절한 악어" ? "OWNER" : "VIEWER"}
             isModalActive={commentId === activeId}
-            reportFn={() => console.log(`댓글 (${commentId})를 신고합니다.`)}
-            editFn={() => console.log(`댓글 (${commentId})를 수정합니다.`)}
-            deleteFn={() => console.log(`댓글 (${commentId})를 삭제합니다.`)}
+            reportFn={() => console.log(`댓글 ${commentId}를 신고합니다.`)}
+            editFn={() => console.log(`댓글 ${commentId}를 수정합니다.`)}
+            deleteFn={() => console.log(`댓글 ${commentId}를 삭제합니다.`)}
           />
         </div>
       </div>
