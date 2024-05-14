@@ -39,8 +39,6 @@ export default function CommentsArea({ comments }: CommentsAreaProps) {
     return () => window.removeEventListener("click", windowClick);
   }, [windowClick]);
 
-  // console.log(activeState);
-
   return (
     <>
       {comments.length > 0 ? (

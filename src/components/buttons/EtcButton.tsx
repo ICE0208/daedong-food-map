@@ -8,6 +8,9 @@ interface EtcButtonProps {
   type?: "VIEWER" | "OWNER";
   size?: number;
   isModalActive?: boolean;
+  reportFn?: () => void;
+  editFn?: () => void;
+  deleteFn?: () => void;
 }
 
 export default function EtcButton({
@@ -15,6 +18,9 @@ export default function EtcButton({
   type = "VIEWER",
   size,
   isModalActive,
+  reportFn,
+  editFn,
+  deleteFn,
 }: EtcButtonProps) {
   return (
     <div
@@ -22,12 +28,36 @@ export default function EtcButton({
       className="relative cursor-pointer"
       onClick={onClick}
     >
-      <div className="pointer-events-none">
-        <SVGButton svg={EtcSVG} size={size} />
-        {isModalActive && (
-          <div className="absolute right-0 top-[20px] h-32 w-32 rounded-3xl bg-gray-200"></div>
-        )}
-      </div>
+      <SVGButton className="pointer-events-none" svg={EtcSVG} size={size} />
+      {isModalActive && (
+        <div className="absolute right-0 top-[20px] flex w-32 flex-col items-stretch rounded-2xl bg-gray-200 py-2">
+          {type === "VIEWER" ? (
+            <>
+              <div
+                className="py-1 text-center hover:bg-gray-100"
+                onClick={reportFn}
+              >
+                신고
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                className="py-1 text-center hover:bg-gray-50"
+                onClick={editFn}
+              >
+                수정
+              </div>
+              <div
+                className="py-1 text-center hover:bg-gray-50"
+                onClick={deleteFn}
+              >
+                삭제
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
