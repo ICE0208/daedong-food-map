@@ -2,6 +2,7 @@
 
 import HeartSVG from "@/icons/HeartSVG";
 import SVGButton from "./SVGButton";
+import EtcButton from "./buttons/EtcButton";
 
 interface ReviewPreviewProps {
   author: string;
@@ -24,11 +25,17 @@ export default function ReviewPreview({
     <div className="w-full overflow-hidden rounded-xl bg-neutral-50">
       <div className="p-6 pb-3">
         {/* 프로필 */}
+        {/* 프로필 */}
         <div className="flex items-center gap-3">
-          <div className="aspect-square w-12 rounded-full bg-blue-300"></div>
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold">{author}</span>
+          <div className="aspect-square w-12 flex-none rounded-full bg-blue-300"></div>
+          <div className="flex flex-1 flex-col overflow-hidden">
+            <span className="overflow-hidden text-ellipsis text-lg font-semibold">
+              {author}
+            </span>
             <span className="text-sm">{formattedData}</span>
+          </div>
+          <div className="flex-none">
+            <EtcButton size={5} />
           </div>
         </div>
         <div className="my-3" />
