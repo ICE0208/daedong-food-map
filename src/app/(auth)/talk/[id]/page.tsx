@@ -1,7 +1,7 @@
 import { default as talkMockData } from "@/mocks/talkData";
 import { redirect } from "next/navigation";
 
-import Comment from "./components/Comment";
+import CommentWithReplies from "./components/CommentWithReplies";
 import TalkDetail from "./components/TalkDetail";
 
 interface TalkDetailPageProps {
@@ -64,7 +64,7 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
           {detailTalkData.comments.length > 0 ? (
             <div className="space-y-3">
               {detailTalkData.comments.map((comment, index) => (
-                <Comment key={index} {...comment} />
+                <CommentWithReplies key={index} {...comment} />
               ))}
             </div>
           ) : (

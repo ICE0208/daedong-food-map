@@ -27,7 +27,7 @@ export default function Comment({
       <span className="whitespace-pre-wrap break-words">{content}</span>
       <div className="my-[2px]" />
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-[1px]">
+        <div className="flex items-center gap-[2px]">
           <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
           <span>{heartCount}</span>
         </div>

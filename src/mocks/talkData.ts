@@ -18,24 +18,48 @@ const talkData = [
         content: "xxx 국밥집 저녁으로 아주 좋습니다~",
         formattedData: "24/04/12 - 21:17",
         heartCount: 1,
+        replies: [
+          {
+            author: "활발한 잉어",
+            content: "저도 여기 추천해요!",
+            formattedData: "24/04/12 - 21:19",
+            heartCount: 0,
+          },
+        ],
       },
       {
         author: "맛있는 사슴",
         content: "yyy 식당 추천해드릴게요!",
         formattedData: "24/04/12 - 22:05",
         heartCount: 3,
+        replies: [
+          {
+            author: "활발한 잉어",
+            content: "여기 맛있죠~",
+            formattedData: "24/04/12 - 23:19",
+            heartCount: 1,
+          },
+          {
+            author: "유연한 악어",
+            content: "저는 개인적으로 별로였어요",
+            formattedData: "24/04/12 - 23:47",
+            heartCount: 0,
+          },
+        ],
       },
       {
         author: "음식을 사랑하는 고양이",
         content: "zzz 맛집이 많은 곳이에요. 꼭 가보세요!",
         formattedData: "24/04/13 - 09:30",
         heartCount: 5,
+        replies: [],
       },
       {
         author: "식도락을 즐기는 강아지",
         content: "xxx 국밥집은 정말 맛있어요. 점심으로도 강추합니다.",
         formattedData: "24/04/13 - 11:45",
         heartCount: 2,
+        replies: [],
       },
       // 추가 코멘트
     ],
@@ -58,24 +82,28 @@ const talkData = [
         content: "yyy 카페 추천드릴게요~",
         formattedData: "24/04/13 - 11:00",
         heartCount: 1,
+        replies: [],
       },
       {
         author: "디저트 맛있는 물고기",
         content: "yyy 카페는 분위기도 좋고 디저트 맛도 최고에요.",
         formattedData: "24/04/13 - 12:30",
         heartCount: 4,
+        replies: [],
       },
       {
         author: "디저트 맛보기",
         content: "yyy 카페에서는 디저트 종류가 다양하게 있어요. 추천해요!",
         formattedData: "24/04/14 - 10:15",
         heartCount: 1,
+        replies: [],
       },
       {
         author: "디저트 파는 고양이",
         content: "yyy 카페는 디저트가 정말 맛있어요. 꼭 들러보세요!",
         formattedData: "24/04/14 - 14:00",
         heartCount: 2,
+        replies: [],
       },
       // 추가 코멘트
     ],
@@ -98,24 +126,28 @@ const talkData = [
         content: "zzz 공원 추천드려요~",
         formattedData: "24/04/14 - 16:00",
         heartCount: 2,
+        replies: [],
       },
       {
         author: "자연을 사랑하는 강아지",
         content: "zzz 산책로가 있는 공원이 있어요. 꼭 가보세요!",
         formattedData: "24/04/14 - 17:30",
         heartCount: 1,
+        replies: [],
       },
       {
         author: "자연을 향하는 새",
         content: "zzz 산책로가 있는 공원에서 자연을 만끽하세요!",
         formattedData: "24/04/15 - 09:45",
         heartCount: 0,
+        replies: [],
       },
       {
         author: "산림욕을 즐기는 사슴",
         content: "zzz 숲 속을 산책하며 힐링할 수 있는 곳이에요.",
         formattedData: "24/04/15 - 11:20",
         heartCount: 5,
+        replies: [],
       },
       // 추가 코멘트
     ],
@@ -138,12 +170,14 @@ const talkData = [
         content: "zzz 쇼핑몰 추천해드려요~",
         formattedData: "24/04/15 - 13:30",
         heartCount: 2,
+        replies: [],
       },
       {
         author: "쇼핑 전문가",
         content: "zzz 강남에는 쇼핑 명소가 많아요. 다양한 쇼핑을 즐겨보세요!",
         formattedData: "24/04/15 - 14:45",
         heartCount: 3,
+        replies: [],
       },
       {
         author: "패션을 즐기는 고양이",
@@ -151,6 +185,7 @@ const talkData = [
           "zzz 강남은 쇼핑하기 좋은 도시에요. 다양한 쇼핑 명소를 추천드려요!",
         formattedData: "24/04/16 - 10:00",
         heartCount: 5,
+        replies: [],
       },
       {
         author: "스타일리스트",
@@ -158,6 +193,7 @@ const talkData = [
           "zzz 강남에는 유명 브랜드 쇼핑몰이 많아요. 스타일리시한 아이템을 찾아보세요!",
         formattedData: "24/04/16 - 12:15",
         heartCount: 1,
+        replies: [],
       },
       // 추가 코멘트
     ],
@@ -180,18 +216,21 @@ const talkData = [
         content: "zzz 관광지 추천해요~",
         formattedData: "24/04/16 - 10:30",
         heartCount: 2,
+        replies: [],
       },
       {
         author: "여행가",
         content: "zzz 강남에는 멋진 관광지가 많아요. 즐거운 여행 되세요!",
         formattedData: "24/04/16 - 11:45",
         heartCount: 3,
+        replies: [],
       },
       {
         author: "여행을 즐기는 고래",
         content: "zzz 강남에서 볼 만한 곳이 많이 있어요. 추천해드려요!",
         formattedData: "24/04/16 - 13:00",
         heartCount: 1,
+        replies: [],
       },
       {
         author: "지식을 찾는 동물",
@@ -199,6 +238,7 @@ const talkData = [
           "zzz 강남의 유명한 관광 명소를 즐기세요. 풍부한 경험이 될 거예요!",
         formattedData: "24/04/17 - 09:30",
         heartCount: 0,
+        replies: [],
       },
       // 추가 코멘트
     ],
