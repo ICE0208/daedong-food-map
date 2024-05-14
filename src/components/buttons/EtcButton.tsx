@@ -35,7 +35,7 @@ export default function EtcButton({
           {type === "VIEWER" ? (
             <>
               <div
-                className="py-1 text-center hover:bg-gray-100"
+                className="cursor-pointer py-1 text-center hover:bg-gray-100"
                 onClick={reportFn}
               >
                 신고
@@ -44,13 +44,13 @@ export default function EtcButton({
           ) : (
             <>
               <div
-                className="py-1 text-center hover:bg-gray-50"
+                className="cursor-pointer py-1 text-center hover:bg-gray-50"
                 onClick={editFn}
               >
                 수정
               </div>
               <div
-                className="py-1 text-center hover:bg-gray-50"
+                className="cursor-pointer py-1 text-center hover:bg-gray-50"
                 onClick={deleteFn}
               >
                 삭제
