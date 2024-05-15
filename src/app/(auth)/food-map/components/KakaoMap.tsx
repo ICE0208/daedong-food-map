@@ -1,8 +1,14 @@
 import { SearchKeywordResponse } from "@/types/apiTypes";
 import { useEffect } from "react";
-import { Map, MapMarker, useKakaoLoader } from "react-kakao-maps-sdk";
+import {
+  CustomOverlayMap,
+  Map,
+  MapMarker,
+  useKakaoLoader,
+} from "react-kakao-maps-sdk";
 
 import IMAGE from "@/assets/images/red-dot.png";
+import HoverMarker from "./HoverMarker";
 
 interface KakaoMapProps {
   lat: number;
@@ -31,17 +37,16 @@ export default function KakaoMap({ lat, lng, restaurantsData }: KakaoMapProps) {
       level={4}
     >
       {restaurantsData?.map((data) => (
-        <MapMarker
+        <HoverMarker
           key={data.id}
           position={{ lat: Number(data.y), lng: Number(data.x) }}
-        ></MapMarker>
+          hoverText={data.place_name}
+          link={data.place_url}
+        ></HoverMarker>
       ))}
-      <MapMarker
-        position={{ lat, lng }}
-        image={{ src: IMAGE.src, size: { width: 24, height: 24 } }}
-      >
-        <div style={{ color: "#000" }}>Hello World!</div>
-      </MapMarker>
+      <CustomOverlayMap position={{ lat, lng }}>
+        <div className="size-4 animate-pulse rounded-full bg-red-400 shadow-2xl" />
+      </CustomOverlayMap>
     </Map>
   );
 }
