@@ -1,12 +1,13 @@
-import { SetStateAction, useState } from "react";
+import { ButtonHTMLAttributes, SetStateAction, useState } from "react";
 import { Position } from "../page";
 
-interface CurrentPositionButtonProps {
+type CurrentPositionButtonProps = {
   setPosition: (value: SetStateAction<Position>) => void;
-}
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function CurrentPositionButton({
   setPosition,
+  className,
 }: CurrentPositionButtonProps) {
   const [loading, setLoading] = useState(false);
 
@@ -33,8 +34,8 @@ export default function CurrentPositionButton({
   };
 
   return (
-    <button onClick={handleClick}>
-      {loading ? "[위치 로딩중...]" : "[내 위치로 가기]"}
+    <button className={className} onClick={handleClick}>
+      {loading ? "위치 로딩중..." : "내 위치로 가기"}
     </button>
   );
 }
