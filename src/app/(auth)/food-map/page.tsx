@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CurrentPositionButton, KakaoMap } from "./components";
+import { getNearRestaurant } from "./actions";
 
 export interface Position {
   lat: number;
@@ -13,6 +14,16 @@ export default function FoodMapPage() {
     lat: 33.450701,
     lng: 126.570667,
   });
+
+  useEffect(() => {
+    if (!position) return;
+    const action = async () => {
+      const result = await getNearRestaurant(position);
+      console.log(result);
+    };
+
+    action();
+  }, [position]);
 
   return (
     <div className="flex w-full flex-col items-center px-24 py-8">
