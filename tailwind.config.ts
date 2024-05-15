@@ -29,6 +29,9 @@ const config: Config = {
         },
       },
     },
+    fontFamily: {
+      BMHANNAPro: ["BMHANNAPro"],
+    },
   },
   plugins: [],
 };
