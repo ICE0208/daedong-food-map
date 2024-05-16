@@ -6,7 +6,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#F0F4F9] px-16 py-8">
       <Link href="/">
-        <h1 className="mb-4 text-[44px] font-bold">대동밥 지도</h1>
+        <h1 className="mb-4 font-BMHANNAPro text-[44px]">대동밥 지도</h1>
       </Link>
       <form
         className={cls(
@@ -14,7 +14,7 @@ export default function LoginPage() {
           "shadow-[0_3px_10px_rgb(0,0,0,0.2)]",
         )}
       >
-        <h1 className="mb-6 text-3xl font-medium">Create Account</h1>
+        <h1 className="mb-6 text-3xl font-semibold">Create Account</h1>
         <div className="flex w-[280px] flex-col gap-1">
           <div className="flex w-full justify-between">
             <span className="mr-3 flex-1 text-right">아이디</span>
