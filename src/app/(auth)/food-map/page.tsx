@@ -37,7 +37,7 @@ export default function FoodMapPage() {
   return (
     <div className="flex w-full flex-1 px-32 pb-14 pt-10">
       {/* <div className="w-full bg-red-200"></div> */}
-      <div className="flex w-full gap-6">
+      <div className="relative flex w-full gap-6">
         <div className="relative w-full overflow-hidden rounded-xl bg-neutral-500">
           <KakaoMap
             restaurantsData={data?.documents}

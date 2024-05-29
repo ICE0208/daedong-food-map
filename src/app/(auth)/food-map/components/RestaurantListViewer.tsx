@@ -15,7 +15,7 @@ export default function RestaurantListViewer({
   setHoveredId,
 }: RestaurantListViewerProps) {
   return (
-    <div className="relative hidden h-full w-[460px] overflow-hidden rounded-xl bg-neutral-100 xl:block">
+    <div className="absolute right-4 z-50 hidden h-[96%] w-[340px] self-center overflow-hidden rounded-xl bg-neutral-100/90 xl:block">
       <div className="absolute flex h-full w-full flex-col items-center overflow-y-auto pb-10 pt-6">
         <h3 className="mb-3 py-3 text-[30px] font-semibold">식당 목록</h3>
         <div
