@@ -28,6 +28,8 @@ export default function FoodMapPage() {
     action();
   }, [position]);
 
+  console.log(data?.documents);
+
   return (
     <div className="flex w-full flex-1 px-32 pb-14 pt-10">
       {/* <div className="w-full bg-red-200"></div> */}

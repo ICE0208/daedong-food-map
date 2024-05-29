@@ -3,7 +3,7 @@ export interface SearchKeywordResponse {
   meta: Meta;
 }
 
-interface Document {
+export interface Document {
   address_name: string;
   category_group_code: string;
   category_group_name: string;
