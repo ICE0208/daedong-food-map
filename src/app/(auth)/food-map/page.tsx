@@ -19,6 +19,7 @@ export default function FoodMapPage() {
   });
   const [data, setData] = useState<SearchKeywordResponse | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const selectedRestaurantData = data?.documents.filter(
     (document) => document.id === selectedId,
   )[0];
@@ -43,11 +44,13 @@ export default function FoodMapPage() {
             lat={position.lat}
             lng={position.lng}
             setPosition={setPosition}
+            hoveredId={hoveredId}
           />
         </div>
         <RestaurantListViewer
           restaurantsData={data?.documents}
           setSelectedId={setSelectedId}
+          setHoveredId={setHoveredId}
         />
       </div>
       {selectedId && (
