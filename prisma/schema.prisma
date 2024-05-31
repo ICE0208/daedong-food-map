@@ -20,12 +20,14 @@ enum Gender {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  userId   String  @unique
-  email    String
-  nickname String
-  password String
-  gender   Gender?
-  age      Int?
-  address  String?
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  email     String
+  nickname  String
+  password  String
+  gender    Gender?
+  age       Int?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
