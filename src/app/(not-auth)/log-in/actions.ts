@@ -1,7 +1,9 @@
 "use server";
 
 import db from "@/libs/db";
+import getSession from "@/libs/session";
 import bcrypt from "bcrypt";
+import { redirect } from "next/navigation";
 
 interface LoginActionFormData {
   id: string;
@@ -25,6 +27,7 @@ export const loginAction = async (
     },
     select: {
       id: true,
+      nickname: true,
       password: true,
     },
   });
@@ -43,7 +46,12 @@ export const loginAction = async (
     };
   }
 
-  console.log("유저 인증 통과");
-
-  return null;
+  // 유저 인증 성공
+  const session = await getSession();
+  session.user = {
+    id: user.id,
+    nickname: user.nickname,
+  };
+  await session.save();
+  return redirect("/");
 };

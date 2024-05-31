@@ -1,6 +1,11 @@
-import Header from "@/components/Header";
+import getSession from "@/libs/session";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+  const user = session.user;
+
+  console.log(user);
+
   return (
     <>
       <main className="min-h-[2000px]">
