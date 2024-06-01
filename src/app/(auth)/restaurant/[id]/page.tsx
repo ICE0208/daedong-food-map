@@ -1,6 +1,8 @@
+import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
 import db from "@/libs/db";
 import formatCategoryName from "@/utils/splitCategory";
 import { redirect } from "next/navigation";
+import { submitReview } from "./actions";
 
 interface RestaurantPageProps {
   params: {
@@ -22,14 +24,17 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
     return redirect("/");
   }
 
+  const submitReviewWithRestaurantIdId = submitReview.bind(null, id);
+
   return (
     <main className="flex w-full flex-1 px-32 py-12">
       <div className="relative flex w-full gap-8">
         <div className="relative w-full overflow-hidden rounded-xl bg-neutral-50 p-14">
+          {/* 식당 정보 */}
           <div className="flex gap-8">
             {/* 관련 이미지 */}
             <div className="size-[200px] rounded-md bg-gray-200" />
-            {/* 식당 정보 */}
+            {/* 식당 데이터 */}
             <div className="flex flex-col py-4">
               <h1 className="mb-2 text-[42px] font-semibold ">{data.name}</h1>
               <span className="flex-1 text-lg leading-[0px]">
@@ -39,6 +44,35 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
               <span className="text-[20px]">{data.phone}</span>
             </div>
           </div>
+          {/* 리뷰 입력 받는 곳 */}
+          <form action={submitReviewWithRestaurantIdId} className="mt-8">
+            <h2 className="mb-4 text-3xl font-semibold">리뷰 작성</h2>
+            <div className="mb-4">
+              <span className="mr-2 text-lg">평점:</span>
+              {[1, 2, 3, 4, 5].map((value) => (
+                <label key={value} className="mr-2">
+                  <input
+                    name="rate"
+                    type="radio"
+                    value={value}
+                    className="mr-1"
+                    required
+                  />
+                  {value}
+                </label>
+              ))}
+            </div>
+            <div className="mb-4">
+              <textarea
+                name="content"
+                className="w-full resize-none rounded-lg border p-2"
+                rows={4}
+                placeholder="리뷰 내용을 입력하세요"
+                required
+              ></textarea>
+            </div>
+            <BlueSubmitButton text="제출" />
+          </form>
         </div>
         {/* ------- */}
         <div className="relative w-[600px] overflow-hidden rounded-xl bg-neutral-50"></div>
