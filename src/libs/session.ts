@@ -1,11 +1,13 @@
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 
-interface SessionContent {
-  user: {
-    id: string;
-    nickname: string;
-  };
+interface SessionUser {
+  id: string;
+  nickname: string;
+}
+
+export interface SessionContent {
+  user: SessionUser | null | undefined;
 }
 
 export default function getSession() {
