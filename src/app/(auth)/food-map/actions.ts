@@ -1,5 +1,9 @@
 "use server";
 
+import db from "@/libs/db";
+import { SearchKeywordResponse } from "@/types/apiTypes";
+import { redirect } from "next/navigation";
+
 export const getNearRestaurant = async (position: {
   lat: number;
   lng: number;
@@ -29,4 +33,32 @@ export const getNearRestaurant = async (position: {
   } catch (error) {
     return null;
   }
+};
+export const routeRestaurantDetail = async (
+  data: SearchKeywordResponse["documents"][number],
+) => {
+  const isExist = Boolean(
+    await db.restaurant.findUnique({
+      where: {
+        id: +data.id,
+      },
+      select: {
+        id: true,
+      },
+    }),
+  );
+
+  if (!isExist) {
+    await db.restaurant.create({
+      data: {
+        id: +data.id,
+        name: data.place_name,
+        address: data.road_address_name,
+        category: data.category_name,
+        phone: data.phone,
+      },
+    });
+  }
+
+  redirect(`/restaurant/${data.id}`);
 };
