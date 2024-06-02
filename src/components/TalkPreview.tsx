@@ -11,7 +11,7 @@ import { talkPreviewActiveModalState } from "@/app/atoms";
 import withStopPropagation from "@/utils/withStopPropagation";
 
 interface RecentComment {
-  author: string;
+  user: { nickname: string };
   content: string;
 }
 
@@ -22,7 +22,7 @@ interface TalkPreviewProps {
   content: string;
   heartCount: number;
   commentCount: number;
-  recentComment: RecentComment;
+  recentComment?: RecentComment;
 }
 
 export default function TalkPreview({
@@ -117,8 +117,17 @@ export default function TalkPreview({
       {/* 최근 댓글 */}
       <div className="overflow-hidden text-ellipsis text-nowrap bg-neutral-300 px-6 py-2">
         <span className="font-semibold">최근 댓글 | </span>
-        <span className="font-semibold">{recentComment.author} : </span>
-        <span>{recentComment.content}</span>
+
+        {recentComment ? (
+          <>
+            <span className="font-semibold">
+              {recentComment.user.nickname} :{" "}
+            </span>
+            <span>{recentComment.content}</span>
+          </>
+        ) : (
+          <span>댓글이 없습니다.</span>
+        )}
       </div>
     </div>
   );
