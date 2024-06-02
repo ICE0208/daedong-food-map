@@ -92,3 +92,22 @@ export const deleteReview = async (restaurantId: string) => {
   console.log("지워짐.");
   revalidatePath(`/restaurant/${restaurantId}`);
 };
+
+export const getAllReviews = async (restaurantId: string) => {
+  const reviews = await db.review.findMany({
+    where: {
+      restaurantId: +restaurantId,
+    },
+    include: {
+      user: {
+        select: {
+          nickname: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return reviews;
+};

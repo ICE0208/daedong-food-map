@@ -2,8 +2,14 @@ import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
 import db from "@/libs/db";
 import formatCategoryName from "@/utils/splitCategory";
 import { redirect } from "next/navigation";
-import { deleteReview, getMyReview, submitReview } from "./actions";
+import {
+  deleteReview,
+  getAllReviews,
+  getMyReview,
+  submitReview,
+} from "./actions";
 import RedTextSubmitButton from "@/components/buttons/RedTextSubmitButton";
+import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
 
 interface RestaurantPageProps {
   params: {
@@ -26,7 +32,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
   }
 
   const myReview = await getMyReview(id);
-  console.log(myReview);
+  const reviews = await getAllReviews(id);
 
   const submitReviewWithRestaurantIdId = submitReview.bind(null, id);
 
@@ -108,8 +114,25 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
             </form>
           )}
         </div>
-        {/* ------- */}
-        <div className="relative w-[600px] overflow-hidden rounded-xl bg-neutral-50"></div>
+        {/* 최근 */}
+        <div className="relative w-[500px] overflow-hidden rounded-xl bg-neutral-50">
+          <div className="absolute h-full w-full space-y-4 overflow-y-auto p-12">
+            <h3 className="pb-4 text-center text-3xl font-semibold">
+              최근 리뷰
+            </h3>
+            {reviews.map((review) => (
+              <div key={review.id} className="flex flex-col">
+                <span className="text-xl font-semibold">
+                  {review.user.nickname}
+                </span>
+                <span className="break-words">{review.content}</span>
+                <span className="mt-1 text-[13px] text-neutral-500">
+                  {formatToTimeAgo(review.createdAt.toString())}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </main>
   );
