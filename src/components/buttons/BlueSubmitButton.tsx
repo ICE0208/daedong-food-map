@@ -24,7 +24,7 @@ export default function BlueSubmitButton({
       disabled={pending}
     >
       {pending ? (
-        <div className="flex items-center gap-[4px]">
+        <div className="flex items-center justify-center gap-[4px]">
           <span>로딩중</span>
           <div className="mx-[4px] animate-spin text-[8px] font-semibold">
             |
