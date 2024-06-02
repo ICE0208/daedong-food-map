@@ -58,7 +58,7 @@ model Review {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   restaurantId Int
 
   createdAt DateTime @default(now())
@@ -101,7 +101,7 @@ model TalkCommentReply {
 
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId        String
-  talk          TalkComment @relation(fields: [talkCommentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkComment   TalkComment @relation(fields: [talkCommentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   talkCommentId Int
 
   createdAt DateTime @default(now())
