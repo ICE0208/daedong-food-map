@@ -2,7 +2,8 @@ import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
 import db from "@/libs/db";
 import formatCategoryName from "@/utils/splitCategory";
 import { redirect } from "next/navigation";
-import { submitReview } from "./actions";
+import { deleteReview, getMyReview, submitReview } from "./actions";
+import RedTextSubmitButton from "@/components/buttons/RedTextSubmitButton";
 
 interface RestaurantPageProps {
   params: {
@@ -24,6 +25,9 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
     return redirect("/");
   }
 
+  const myReview = await getMyReview(id);
+  console.log(myReview);
+
   const submitReviewWithRestaurantIdId = submitReview.bind(null, id);
 
   return (
@@ -44,35 +48,65 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
               <span className="text-[20px]">{data.phone}</span>
             </div>
           </div>
-          {/* 리뷰 입력 받는 곳 */}
-          <form action={submitReviewWithRestaurantIdId} className="mt-8">
-            <h2 className="mb-4 text-3xl font-semibold">리뷰 작성</h2>
-            <div className="mb-4">
-              <span className="mr-2 text-lg">평점:</span>
-              {[1, 2, 3, 4, 5].map((value) => (
-                <label key={value} className="mr-2">
-                  <input
-                    name="rate"
-                    type="radio"
-                    value={value}
-                    className="mr-1"
-                    required
-                  />
-                  {value}
-                </label>
-              ))}
-            </div>
-            <div className="mb-4">
-              <textarea
-                name="content"
-                className="w-full resize-none rounded-lg border p-2"
-                rows={4}
-                placeholder="리뷰 내용을 입력하세요"
-                required
-              ></textarea>
-            </div>
-            <BlueSubmitButton text="제출" />
-          </form>
+          {myReview ? (
+            // 내 리뷰
+            <form
+              action={async () => {
+                "use server";
+                await deleteReview(id);
+              }}
+              className="mt-8"
+            >
+              <h2 className="mb-4 text-3xl font-semibold">내 리뷰</h2>
+              <div className="mb-4">
+                <span className="mr-2 text-lg">평점: {myReview.rating}</span>
+              </div>
+              <div className="">
+                <textarea
+                  key="myreview-textarea"
+                  name="content"
+                  value={myReview.content}
+                  className="w-full resize-none rounded-lg border p-2"
+                  rows={4}
+                  placeholder="리뷰 내용을 입력하세요"
+                  required
+                  disabled
+                ></textarea>
+              </div>
+              <RedTextSubmitButton text="삭제" />
+            </form>
+          ) : (
+            // 리뷰 작성하는 곳
+            <form action={submitReviewWithRestaurantIdId} className="mt-8">
+              <h2 className="mb-4 text-3xl font-semibold">리뷰 작성</h2>
+              <div className="mb-4">
+                <span className="mr-2 text-lg">평점:</span>
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <label key={value} className="mr-2">
+                    <input
+                      name="rate"
+                      type="radio"
+                      value={value}
+                      className="mr-1"
+                      required
+                    />
+                    {value}
+                  </label>
+                ))}
+              </div>
+              <div className="mb-4">
+                <textarea
+                  key="newreview-textarea"
+                  name="content"
+                  className="w-full resize-none rounded-lg border p-2"
+                  rows={4}
+                  placeholder="리뷰 내용을 입력하세요"
+                  required
+                ></textarea>
+              </div>
+              <BlueSubmitButton text="제출" />
+            </form>
+          )}
         </div>
         {/* ------- */}
         <div className="relative w-[600px] overflow-hidden rounded-xl bg-neutral-50"></div>
