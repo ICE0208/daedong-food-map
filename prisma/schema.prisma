@@ -36,6 +36,7 @@ model User {
   talks              Talk[]
   talkComments       TalkComment[]
   talkCommentReplies TalkCommentReply[]
+  likes              Like[]
 }
 
 model Restaurant {
@@ -61,6 +62,8 @@ model Review {
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   restaurantId Int
 
+  likes Like[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -75,6 +78,7 @@ model Talk {
   userId String
 
   talkComments TalkComment[]
+  likes        Like[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,6 +94,7 @@ model TalkComment {
   talkId Int
 
   talkCommentReplies TalkCommentReply[]
+  likes              Like[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -104,6 +109,27 @@ model TalkCommentReply {
   talkComment   TalkComment @relation(fields: [talkCommentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   talkCommentId Int
 
+  likes Like[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id                 Int    @id @default(autoincrement())
+  user               User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId             String
+  reviewId           Int?
+  talkId             Int?
+  talkCommentId      Int?
+  talkCommentReplyId Int?
+
+  review           Review?           @relation(fields: [reviewId], references: [id])
+  talk             Talk?             @relation(fields: [talkId], references: [id])
+  talkComment      TalkComment?      @relation(fields: [talkCommentId], references: [id])
+  talkCommentReply TalkCommentReply? @relation(fields: [talkCommentReplyId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([reviewId, talkId, talkCommentId, talkCommentReplyId])
 }
