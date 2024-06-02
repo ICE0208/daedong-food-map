@@ -32,7 +32,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reviews Review[]
+  reviews      Review[]
+  talks        Talk[]
+  talkComments TalkComment[]
 }
 
 model Restaurant {
@@ -62,4 +64,30 @@ model Review {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, restaurantId])
+}
+
+model Talk {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  talkComments TalkComment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TalkComment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+  talk   Talk   @relation(fields: [talkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
