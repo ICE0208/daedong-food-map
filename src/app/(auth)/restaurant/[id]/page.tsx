@@ -34,6 +34,13 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
   const myReview = await getMyReview(id);
   const reviews = await getAllReviews(id);
 
+  // 평점 평균 계산
+  let averageOfRate = null;
+  if (reviews.length > 0) {
+    const sumOfRate = reviews.reduce((a, c) => a + c.rating, 0);
+    averageOfRate = Math.floor((sumOfRate / reviews.length) * 10) / 10;
+  }
+
   const submitReviewWithRestaurantIdId = submitReview.bind(null, id);
 
   return (
@@ -45,10 +52,13 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
             {/* 관련 이미지 */}
             <div className="size-[200px] rounded-md bg-gray-200" />
             {/* 식당 데이터 */}
-            <div className="flex flex-col py-4">
+            <div className="flex flex-col py-2">
               <h1 className="mb-2 text-[42px] font-semibold ">{data.name}</h1>
               <span className="flex-1 text-lg leading-[0px]">
                 {formatCategoryName(data.category)}
+              </span>
+              <span className="text-[20px]">
+                평점: {averageOfRate ?? "없음"}
               </span>
               <span className="text-[20px]">{data.address}</span>
               <span className="text-[20px]">{data.phone}</span>

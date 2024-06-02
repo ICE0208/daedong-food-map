@@ -54,7 +54,7 @@ export const submitReview = async (
 export const getMyReview = async (restaurantId: string) => {
   const session = await getSession();
   const user = session.user;
-  if (!user) redirect("/");
+  if (!user) return null;
   const myReview = await db.review.findUnique({
     where: {
       userId_restaurantId: { userId: user.id, restaurantId: +restaurantId },
