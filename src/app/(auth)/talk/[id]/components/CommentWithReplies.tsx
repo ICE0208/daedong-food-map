@@ -20,6 +20,7 @@ export default function CommentWithReplies({
         formattedData={formatToTimeAgo(comment.createdAt.toString())}
         content={comment.content}
         heartCount={comment._count.likes}
+        activeReply={true}
       />
       {comment.talkCommentReplies.map((reply, index) => {
         return (

@@ -1,6 +1,9 @@
 import SVGButton from "@/components/SVGButton";
+import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
 import EtcButton from "@/components/buttons/EtcButton";
 import HeartSVG from "@/icons/HeartSVG";
+import ReplyButton from "./ReplyButton";
+import { submitTalkReplyComment } from "../actions";
 
 interface CommentProps {
   activeState: [number, React.Dispatch<React.SetStateAction<number>>];
@@ -9,6 +12,7 @@ interface CommentProps {
   formattedData: string;
   content: string;
   heartCount: number;
+  activeReply?: boolean;
 }
 
 export default function Comment({
@@ -18,6 +22,7 @@ export default function Comment({
   formattedData,
   content,
   heartCount,
+  activeReply = false,
 }: CommentProps) {
   const [activeId, setActiveId] = activeState;
 
@@ -48,11 +53,29 @@ export default function Comment({
       <div className="my-[4px]" />
       <span className="whitespace-pre-wrap break-words">{content}</span>
       <div className="my-[2px]" />
-      <div className="flex items-center gap-2">
+      <div className="mt-2 flex items-center gap-6">
         <div className="flex items-center gap-[2px]">
           <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
           <span>{heartCount}</span>
         </div>
+        {activeReply && (
+          <form
+            action={(formData) => {
+              submitTalkReplyComment(commentId, formData);
+            }}
+            key={Date.now()}
+            className="flex flex-grow items-center gap-3"
+          >
+            <div className="aspect-square w-[22px] rounded-full bg-blue-300" />
+            <div className="flex w-full flex-col gap-2">
+              <input
+                className="w-full border-b-[1.4px] border-gray-800 bg-transparent outline-none"
+                name="content"
+              />
+            </div>
+            <ReplyButton />
+          </form>
+        )}
       </div>
     </div>
   );

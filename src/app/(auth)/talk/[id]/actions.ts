@@ -23,3 +23,25 @@ export const submitTalkComment = async (talkId: string, formData: FormData) => {
   console.log("댓글 생성됨");
   revalidatePath(`/talk/${talkId}`);
 };
+
+export const submitTalkReplyComment = async (
+  talkCommentId: number,
+  formData: FormData,
+) => {
+  const content = formData.get("content") as string;
+  const user = (await getSession()).user;
+
+  if (!user) return;
+
+  const newTalkReply = await db.talkCommentReply.create({
+    data: {
+      content,
+      userId: user.id,
+      talkCommentId,
+    },
+  });
+  console.log(newTalkReply);
+  console.log("대댓글 생성됨");
+
+  revalidatePath("");
+};
