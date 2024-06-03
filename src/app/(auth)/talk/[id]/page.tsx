@@ -5,6 +5,8 @@ import CommentsArea from "./components/CommentsArea";
 import db from "@/libs/db";
 import { Prisma } from "@prisma/client";
 import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
+import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
+import { submitTalkComment } from "./actions";
 
 interface TalkDetailPageProps {
   params: {
@@ -65,6 +67,8 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
     redirect("/talk");
   }
 
+  const submitTalkCommentWithTalkId = submitTalkComment.bind(null, talkId);
+
   return (
     <main className="flex justify-center px-24 py-8">
       <div className="w-full max-w-[820px] rounded-xl bg-slate-200 p-[20px]">
@@ -85,16 +89,20 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
             댓글 {detailTalkData._count.talkComments}
           </span>
           <div className="my-1" />
-          <form className="flex items-start gap-3 px-3 pr-6">
+          <form
+            key={Date.now()}
+            action={submitTalkCommentWithTalkId}
+            className="flex items-start gap-3 px-3 pr-6"
+          >
             <div className="aspect-square w-[36px] rounded-full bg-blue-300" />
             <div className="flex w-full flex-col gap-2">
               <input
                 className="w-full border-b-2 border-gray-800 bg-transparent outline-none"
                 name="content"
               />
-              <button className="self-end rounded-xl bg-neutral-50 px-[20px] py-[6px] font-semibold">
-                등록
-              </button>
+              <span className="self-end">
+                <BlueSubmitButton text="등록" />
+              </span>
             </div>
           </form>
           <div className="my-2" />
