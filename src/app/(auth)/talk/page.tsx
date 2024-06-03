@@ -9,6 +9,7 @@ import Link from "next/link";
 
 const getTalkData = async () => {
   const talks = await db.talk.findMany({
+    orderBy: { createdAt: "desc" },
     select: {
       id: true,
       user: {
