@@ -4,12 +4,14 @@ import EtcButton from "@/components/buttons/EtcButton";
 import HeartSVG from "@/icons/HeartSVG";
 import ReplyButton from "./ReplyButton";
 import { submitTalkReplyComment } from "../actions";
+import { useLayoutEffect, useRef, useState } from "react";
+import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
 
 interface CommentProps {
   activeState: [number, React.Dispatch<React.SetStateAction<number>>];
   commentId: number;
   author: string;
-  formattedData: string;
+  createdAt: Date;
   content: string;
   heartCount: number;
   activeReply?: boolean;
@@ -19,12 +21,17 @@ export default function Comment({
   activeState,
   commentId,
   author,
-  formattedData,
   content,
   heartCount,
+  createdAt,
   activeReply = false,
 }: CommentProps) {
   const [activeId, setActiveId] = activeState;
+  const [formattedData, setFormattedData] = useState("로딩중...");
+
+  useLayoutEffect(() => {
+    setFormattedData(formatToTimeAgo(createdAt.toString()));
+  }, [createdAt]);
 
   return (
     <div className="flex flex-col rounded-xl bg-neutral-50 px-6 py-5">

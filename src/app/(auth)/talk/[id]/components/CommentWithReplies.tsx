@@ -17,7 +17,7 @@ export default function CommentWithReplies({
         activeState={activeState}
         commentId={comment.id}
         author={comment.user.nickname}
-        formattedData={formatToTimeAgo(comment.createdAt.toString())}
+        createdAt={comment.createdAt}
         content={comment.content}
         heartCount={comment._count.likes}
         activeReply={true}
@@ -29,7 +29,7 @@ export default function CommentWithReplies({
               activeState={activeState}
               commentId={reply.id}
               author={reply.user.nickname}
-              formattedData={formatToTimeAgo(reply.createdAt.toString())}
+              createdAt={reply.createdAt}
               content={reply.content}
               heartCount={reply._count.likes}
             />
