@@ -18,7 +18,6 @@ interface TalkPreviewProps {
   content: string;
   heartCount: number;
   commentCount: number;
-  recentComment: RecentComment;
 }
 
 export default function TalkDetail({
@@ -28,7 +27,6 @@ export default function TalkDetail({
   content,
   heartCount,
   commentCount,
-  recentComment,
 }: TalkPreviewProps) {
   const [modalActive, setModalActive] = useState(false);
 

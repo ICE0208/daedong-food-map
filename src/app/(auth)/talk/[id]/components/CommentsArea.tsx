@@ -2,22 +2,10 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CommentWithReplies from "./CommentWithReplies";
+import { Talk } from "../page";
 
 interface CommentsAreaProps {
-  comments: {
-    commentId: number;
-    author: string;
-    content: string;
-    formattedData: string;
-    heartCount: number;
-    replies: {
-      commentId: number;
-      author: string;
-      content: string;
-      formattedData: string;
-      heartCount: number;
-    }[];
-  }[];
+  comments: Talk["talkComments"];
 }
 
 export default function CommentsArea({ comments }: CommentsAreaProps) {
@@ -47,7 +35,7 @@ export default function CommentsArea({ comments }: CommentsAreaProps) {
             <CommentWithReplies
               activeState={activeState}
               key={index}
-              {...comment}
+              comment={comment}
             />
           ))}
         </div>
