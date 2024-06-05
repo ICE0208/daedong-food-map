@@ -1,9 +1,13 @@
 import RecoilWrapper from "@/components/RecoilWrapper";
 import ReviewPreview from "@/components/ReviewPreview";
 import db from "@/libs/db";
+import getSession from "@/libs/session";
 import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
 
 const getReviewData = async () => {
+  const session = await getSession();
+  const user = session.user;
+
   const reviews = await db.review.findMany({
     select: {
       id: true,
@@ -16,6 +20,7 @@ const getReviewData = async () => {
       rating: true,
       createdAt: true,
       content: true,
+      likes: { where: { userId: user?.id } },
       _count: {
         select: {
           likes: true,
@@ -47,6 +52,7 @@ export default async function ReviewPage() {
               heartCount={data._count.likes}
               restaurantName={data.restaurant.name}
               rate={data.rating}
+              isLike={data.likes.length > 0}
             />
           ))}
         </RecoilWrapper>
