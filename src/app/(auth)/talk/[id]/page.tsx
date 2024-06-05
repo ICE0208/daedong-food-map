@@ -7,6 +7,7 @@ import { Prisma } from "@prisma/client";
 import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
 import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
 import { submitTalkComment } from "./actions";
+import getSession from "@/libs/session";
 
 interface TalkDetailPageProps {
   params: {
@@ -15,6 +16,9 @@ interface TalkDetailPageProps {
 }
 
 const getDetailTalkData = async (talkId: number) => {
+  const session = await getSession();
+  const user = session.user;
+
   const talk = await db.talk.findUnique({
     where: {
       id: talkId,
@@ -24,6 +28,7 @@ const getDetailTalkData = async (talkId: number) => {
       user: { select: { nickname: true } },
       createdAt: true,
       content: true,
+      likes: { where: { userId: user?.id } },
       _count: {
         select: {
           likes: true,
@@ -34,16 +39,18 @@ const getDetailTalkData = async (talkId: number) => {
         orderBy: { createdAt: "desc" },
         select: {
           id: true,
-          user: { select: { nickname: true } },
+          user: { select: { nickname: true, id: true } },
           content: true,
           createdAt: true,
+          likes: { where: { userId: user?.id } },
           _count: { select: { likes: true } },
           talkCommentReplies: {
             select: {
               id: true,
-              user: { select: { nickname: true } },
+              user: { select: { nickname: true, id: true } },
               content: true,
               createdAt: true,
+              likes: { where: { userId: user?.id } },
               _count: { select: { likes: true } },
             },
           },
@@ -66,6 +73,8 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
   if (!detailTalkData) {
     redirect("/talk");
   }
+
+  const curUserId = (await getSession()).user?.id;
 
   const submitTalkCommentWithTalkId = submitTalkComment.bind(null, talkId);
 
@@ -106,7 +115,10 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
             </div>
           </form>
           <div className="my-2" />
-          <CommentsArea comments={detailTalkData.talkComments} />
+          <CommentsArea
+            curUserId={curUserId}
+            comments={detailTalkData.talkComments}
+          />
         </div>
       </div>
     </main>

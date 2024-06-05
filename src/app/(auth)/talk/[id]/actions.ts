@@ -45,3 +45,56 @@ export const submitTalkReplyComment = async (
 
   revalidatePath("");
 };
+
+export const submitLike = async (
+  commentId: number,
+  type: "DEFAULT" | "REPLY",
+  prevLikeState: boolean,
+) => {
+  const user = (await getSession()).user;
+
+  if (!user) return;
+
+  let newLike;
+  try {
+    if (type === "DEFAULT") {
+      if (prevLikeState === false) {
+        newLike = await db.talkCommentLike.create({
+          data: {
+            talkCommentId: commentId,
+            userId: user.id,
+          },
+        });
+      } else {
+        await db.talkCommentLike.delete({
+          where: {
+            userId_talkCommentId: { userId: user.id, talkCommentId: commentId },
+          },
+        });
+      }
+    } else if (type === "REPLY") {
+      if (prevLikeState === false) {
+        newLike = await db.talkCommentReplyLike.create({
+          data: {
+            talkCommentReplyId: commentId,
+            userId: user.id,
+          },
+        });
+      } else {
+        await db.talkCommentReplyLike.delete({
+          where: {
+            userId_talkCommentReplyId: {
+              userId: user.id,
+              talkCommentReplyId: commentId,
+            },
+          },
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  // console.log(newLike);
+  revalidatePath("");
+};

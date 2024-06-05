@@ -1,30 +1,37 @@
 import SVGButton from "@/components/SVGButton";
-import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
 import EtcButton from "@/components/buttons/EtcButton";
 import HeartSVG from "@/icons/HeartSVG";
 import ReplyButton from "./ReplyButton";
-import { submitTalkReplyComment } from "../actions";
+import { submitLike, submitTalkReplyComment } from "../actions";
 import { useLayoutEffect, useRef, useState } from "react";
 import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
 
 interface CommentProps {
+  type?: "DEFAULT" | "REPLY";
   activeState: [number, React.Dispatch<React.SetStateAction<number>>];
   commentId: number;
   author: string;
+  authorId: string;
   createdAt: Date;
   content: string;
   heartCount: number;
+  isLike: boolean;
   activeReply?: boolean;
+  curUserId?: string;
 }
 
 export default function Comment({
+  type = "DEFAULT",
   activeState,
   commentId,
   author,
+  authorId,
   content,
   heartCount,
   createdAt,
+  isLike,
   activeReply = false,
+  curUserId,
 }: CommentProps) {
   const [activeId, setActiveId] = activeState;
   const [formattedData, setFormattedData] = useState("로딩중...");
@@ -62,7 +69,12 @@ export default function Comment({
       <div className="my-[2px]" />
       <div className="mt-2 flex items-center gap-6">
         <div className="flex items-center gap-[2px]">
-          <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
+          <SVGButton
+            svg={HeartSVG}
+            size={5}
+            color={isLike ? "rgb(252, 84, 151)" : "rgba(252, 84, 151, 0.3)"}
+            onClick={() => submitLike(commentId, type, isLike)}
+          />
           <span>{heartCount}</span>
         </div>
         {activeReply && (

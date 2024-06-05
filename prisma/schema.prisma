@@ -32,11 +32,14 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reviews            Review[]
-  talks              Talk[]
-  talkComments       TalkComment[]
-  talkCommentReplies TalkCommentReply[]
-  likes              Like[]
+  reviews               Review[]
+  talks                 Talk[]
+  talkComments          TalkComment[]
+  talkCommentReplies    TalkCommentReply[]
+  reviewLikes           ReviewLike[]
+  talkLikes             TalkLike[]
+  talkCommentLikes      TalkCommentLike[]
+  talkCommentReplyLikes TalkCommentReplyLike[]
 }
 
 model Restaurant {
@@ -62,7 +65,7 @@ model Review {
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   restaurantId Int
 
-  likes Like[]
+  likes ReviewLike[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,7 +81,7 @@ model Talk {
   userId String
 
   talkComments TalkComment[]
-  likes        Like[]
+  likes        TalkLike[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -94,7 +97,7 @@ model TalkComment {
   talkId Int
 
   talkCommentReplies TalkCommentReply[]
-  likes              Like[]
+  likes              TalkCommentLike[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -109,27 +112,56 @@ model TalkCommentReply {
   talkComment   TalkComment @relation(fields: [talkCommentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   talkCommentId Int
 
-  likes Like[]
+  likes TalkCommentReplyLike[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Like {
-  id                 Int    @id @default(autoincrement())
-  user               User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId             String
-  reviewId           Int?
-  talkId             Int?
-  talkCommentId      Int?
-  talkCommentReplyId Int?
-
-  review           Review?           @relation(fields: [reviewId], references: [id])
-  talk             Talk?             @relation(fields: [talkId], references: [id])
-  talkComment      TalkComment?      @relation(fields: [talkCommentId], references: [id])
-  talkCommentReply TalkCommentReply? @relation(fields: [talkCommentReplyId], references: [id])
+model ReviewLike {
+  id       Int    @id @default(autoincrement())
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  reviewId Int
 
   createdAt DateTime @default(now())
 
-  @@unique([reviewId, talkId, talkCommentId, talkCommentReplyId])
+  @@unique([userId, reviewId])
+}
+
+model TalkLike {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+  talk   Talk   @relation(fields: [talkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkId Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, talkId])
+}
+
+model TalkCommentLike {
+  id            Int         @id @default(autoincrement())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        String
+  talkComment   TalkComment @relation(fields: [talkCommentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkCommentId Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, talkCommentId])
+}
+
+model TalkCommentReplyLike {
+  id                 Int              @id @default(autoincrement())
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId             String
+  talkCommentReply   TalkCommentReply @relation(fields: [talkCommentReplyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkCommentReplyId Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, talkCommentReplyId])
 }

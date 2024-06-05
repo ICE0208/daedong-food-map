@@ -5,10 +5,14 @@ import CommentWithReplies from "./CommentWithReplies";
 import { Talk } from "../page";
 
 interface CommentsAreaProps {
+  curUserId?: string;
   comments: Talk["talkComments"];
 }
 
-export default function CommentsArea({ comments }: CommentsAreaProps) {
+export default function CommentsArea({
+  curUserId,
+  comments,
+}: CommentsAreaProps) {
   const activeState = useState(-1);
   const [_, setActive] = useMemo(() => activeState, [activeState]);
 
@@ -33,8 +37,9 @@ export default function CommentsArea({ comments }: CommentsAreaProps) {
         <div className="space-y-3">
           {comments.map((comment, index) => (
             <CommentWithReplies
-              activeState={activeState}
               key={index}
+              activeState={activeState}
+              curUserId={curUserId}
               comment={comment}
             />
           ))}
