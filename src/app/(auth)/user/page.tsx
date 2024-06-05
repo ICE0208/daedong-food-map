@@ -1,12 +1,9 @@
 import getSession from "@/libs/session";
 import { redirect } from "next/navigation";
-import UserPageClient, {
-  UserPageClientWithRecoilRoot,
-} from "./components/UserPageClient";
+import UserPageClientWithRecoilRoot from "./components/UserPageClient";
 import db from "@/libs/db";
 import { PromiseReturnType } from "@prisma/client/extension";
 import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
-import { RecoilRoot } from "recoil";
 
 async function getUserInfo(userId: string) {
   const userInfo = await db.user.findUnique({
@@ -36,10 +33,6 @@ async function getUserReview(userId: string) {
     },
   });
 
-  if (!userReview) {
-    redirect("/");
-  }
-
   return userReview.map((review) => ({
     ...review,
     convertedDate: formatToTimeAgo(review.createdAt.toString()),
@@ -55,25 +48,15 @@ async function getUserTalk(userId: string) {
       likes: { where: { userId: userId } },
       _count: { select: { likes: true, talkComments: true } },
       talkComments: {
-        orderBy: {
-          createdAt: "desc",
-        },
+        orderBy: { createdAt: "desc" },
         select: {
           user: { select: { nickname: true } },
           content: true,
-          _count: {
-            select: {
-              talkCommentReplies: true,
-            },
-          },
+          _count: { select: { talkCommentReplies: true } },
         },
       },
     },
   });
-
-  if (!userTalk) {
-    redirect("/");
-  }
 
   return userTalk.map((talk) => ({
     ...talk,
@@ -97,10 +80,6 @@ async function getLikeReview(userId: string) {
     },
   });
 
-  if (!likeReview) {
-    redirect("/");
-  }
-
   return likeReview.map((data) => ({
     ...data,
     convertedDate: formatToTimeAgo(data.review.createdAt.toString()),
@@ -118,27 +97,17 @@ async function getLikeTalk(userId: string) {
           likes: { where: { userId: userId } },
           _count: { select: { likes: true, talkComments: true } },
           talkComments: {
-            orderBy: {
-              createdAt: "desc",
-            },
+            orderBy: { createdAt: "desc" },
             select: {
               user: { select: { nickname: true } },
               content: true,
-              _count: {
-                select: {
-                  talkCommentReplies: true,
-                },
-              },
+              _count: { select: { talkCommentReplies: true } },
             },
           },
         },
       },
     },
   });
-
-  if (!likeTalk) {
-    redirect("/");
-  }
 
   return likeTalk.map((data) => ({
     ...data,
@@ -159,16 +128,19 @@ export default async function UserPage() {
     redirect("/log-in");
   }
 
-  const userInfo = await getUserInfo(user.id);
+  const [userInfo, userReview, userTalk, likeReview, likeTalk] =
+    await Promise.all([
+      getUserInfo(user.id),
+      getUserReview(user.id),
+      getUserTalk(user.id),
+      getLikeReview(user.id),
+      getLikeTalk(user.id),
+    ]);
+
   if (!userInfo) {
     session.destroy();
     redirect("/log-in");
   }
-
-  const userReview = await getUserReview(user.id);
-  const userTalk = await getUserTalk(user.id);
-  const likeReview = await getLikeReview(user.id);
-  const likeTalk = await getLikeTalk(user.id);
 
   return (
     <UserPageClientWithRecoilRoot
@@ -176,7 +148,7 @@ export default async function UserPage() {
       userReview={userReview}
       userTalk={userTalk}
       likeReview={likeReview}
-      liekTalk={likeTalk}
+      likeTalk={likeTalk}
     />
   );
 }

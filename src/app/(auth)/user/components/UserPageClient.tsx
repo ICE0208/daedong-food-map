@@ -12,15 +12,15 @@ interface UserPageClientProps {
   userInfo: UserInfo;
   userTalk: UserTalk;
   userReview: UserReview;
-  liekTalk: LikeTalk;
+  likeTalk: LikeTalk;
   likeReview: LikeReview;
 }
 
-export default function UserPageClient({
+function UserPageClient({
   userInfo,
   userReview,
   userTalk,
-  liekTalk,
+  likeTalk,
   likeReview,
 }: UserPageClientProps) {
   const [selectedButton, setSelectedButton] = useState<
@@ -89,9 +89,9 @@ export default function UserPageClient({
             <NotContent text="내가 쓴 잡담이 없습니다. 🥺" />
           ))}
         {selectedButton === "like-talk" &&
-          (liekTalk.length > 0 ? (
+          (likeTalk.length > 0 ? (
             <div className="space-y-8">
-              {liekTalk.map((_) => {
+              {likeTalk.map((_) => {
                 const talk = _.talk;
                 const date = _.convertedDate;
                 return (
@@ -185,8 +185,10 @@ const NotContent = ({ text }: { text: string }) => (
   </div>
 );
 
-export const UserPageClientWithRecoilRoot = (props: UserPageClientProps) => (
+const UserPageClientWithRecoilRoot = (props: UserPageClientProps) => (
   <RecoilRoot>
     <UserPageClient {...props} />
   </RecoilRoot>
 );
+
+export default UserPageClientWithRecoilRoot;
