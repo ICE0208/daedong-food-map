@@ -27,7 +27,7 @@ export default function Header({ user }: HeaderProps) {
   };
 
   const handleUserIconClick = () => {
-    router.push("/log-in");
+    router.push("/user");
   };
 
   return (

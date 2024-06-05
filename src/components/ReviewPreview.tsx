@@ -50,7 +50,7 @@ export default function ReviewPreview({
   }, [windowClick]);
 
   return (
-    <div className="w-full overflow-hidden rounded-xl bg-neutral-50">
+    <div className="w-full overflow-hidden rounded-xl bg-neutral-50 ring-2 ring-gray-300">
       <div className="p-6 pb-3">
         {/* 프로필 */}
         {/* 프로필 */}

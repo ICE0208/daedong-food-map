@@ -65,7 +65,7 @@ export default function TalkPreview({
 
   return (
     <div
-      className="w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-50 transition hover:scale-[1.01]"
+      className="w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-50 ring-2 ring-gray-300 transition hover:scale-[1.01]"
       onClick={handleTalkPreview}
     >
       <div className="p-6 pb-3">
