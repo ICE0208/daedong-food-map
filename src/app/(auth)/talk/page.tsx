@@ -49,9 +49,7 @@ const getTalkData = async () => {
     ...talk,
     totalCommentsCount:
       talk._count.talkComments +
-      (talk.talkComments.length > 0
-        ? talk.talkComments[0]._count.talkCommentReplies
-        : 0),
+      talk.talkComments.reduce((a, c) => a + c._count.talkCommentReplies, 0),
   }));
 
   return enhancedTalks;

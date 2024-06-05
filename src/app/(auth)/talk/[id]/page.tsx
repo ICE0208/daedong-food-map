@@ -43,7 +43,7 @@ const getDetailTalkData = async (talkId: number) => {
           content: true,
           createdAt: true,
           likes: { where: { userId: user?.id } },
-          _count: { select: { likes: true } },
+          _count: { select: { likes: true, talkCommentReplies: true } },
           talkCommentReplies: {
             select: {
               id: true,
@@ -61,7 +61,14 @@ const getDetailTalkData = async (talkId: number) => {
 
   if (!talk) redirect("/talk");
 
-  return talk;
+  const enhancedTalks = {
+    ...talk,
+    totalCommentsCount:
+      talk._count.talkComments +
+      talk.talkComments.reduce((a, c) => a + c._count.talkCommentReplies, 0),
+  };
+
+  return enhancedTalks;
 };
 
 export type Talk = Prisma.PromiseReturnType<typeof getDetailTalkData>;
@@ -89,14 +96,14 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
             formattedData={formatToTimeAgo(detailTalkData.createdAt.toString())}
             content={detailTalkData.content}
             heartCount={detailTalkData._count.likes}
-            commentCount={detailTalkData._count.talkComments}
+            commentCount={detailTalkData.totalCommentsCount}
             isLike={detailTalkData.likes.length > 0}
           />
           <div className="my-1" />
 
           <div className="my-4" />
           <span className="ml-[8px] text-[20px]">
-            댓글 {detailTalkData._count.talkComments}
+            댓글 {detailTalkData.totalCommentsCount}
           </span>
           <div className="my-1" />
           <form
