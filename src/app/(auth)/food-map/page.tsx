@@ -45,6 +45,7 @@ export default function FoodMapPage() {
             lng={position.lng}
             setPosition={setPosition}
             hoveredId={hoveredId}
+            setSelectedId={setSelectedId}
           />
         </div>
         <RestaurantListViewer

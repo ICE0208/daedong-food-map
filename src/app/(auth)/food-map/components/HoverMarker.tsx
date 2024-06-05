@@ -9,15 +9,15 @@ interface HoverMarkerProps {
     lng: number;
   };
   hoverText: string;
-  link: string;
   textVisible?: boolean;
+  onClick: () => void;
 }
 
 export default function HoverMarker({
   position,
   hoverText,
-  link,
   textVisible = false,
+  onClick,
 }: HoverMarkerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export default function HoverMarker({
           // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
           () => setIsOpen(false)
         }
-        onClick={() => window.open(link)}
+        onClick={onClick}
       ></MapMarker>
       {(textVisible || isOpen) && (
         <CustomOverlayMap position={position} yAnchor={2.2}>

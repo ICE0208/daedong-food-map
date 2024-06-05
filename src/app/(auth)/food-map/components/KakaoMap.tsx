@@ -12,6 +12,7 @@ interface KakaoMapProps {
   restaurantsData?: SearchKeywordResponse["documents"];
   setPosition: Dispatch<SetStateAction<Position>>;
   hoveredId: string | null;
+  setSelectedId: Dispatch<SetStateAction<string | null>>;
 }
 
 export default function KakaoMap({
@@ -20,6 +21,7 @@ export default function KakaoMap({
   restaurantsData,
   setPosition,
   hoveredId,
+  setSelectedId,
 }: KakaoMapProps) {
   useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAOJSKEY!,
@@ -48,8 +50,8 @@ export default function KakaoMap({
           key={data.id}
           position={{ lat: Number(data.y), lng: Number(data.x) }}
           hoverText={data.place_name}
-          link={data.place_url}
           textVisible={data.id === hoveredId}
+          onClick={() => setSelectedId(data.id)}
         ></HoverMarker>
       ))}
       <CustomOverlayMap position={{ lat, lng }}>
