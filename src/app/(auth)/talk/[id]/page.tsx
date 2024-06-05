@@ -1,9 +1,13 @@
-import { default as talkMockData } from "@/mocks/talkData";
 import { redirect } from "next/navigation";
 
-import CommentWithReplies from "./components/CommentWithReplies";
 import TalkDetail from "./components/TalkDetail";
 import CommentsArea from "./components/CommentsArea";
+import db from "@/libs/db";
+import { Prisma } from "@prisma/client";
+import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
+import BlueSubmitButton from "@/components/buttons/BlueSubmitButton";
+import { submitTalkComment } from "./actions";
+import getSession from "@/libs/session";
 
 interface TalkDetailPageProps {
   params: {
@@ -12,13 +16,62 @@ interface TalkDetailPageProps {
 }
 
 const getDetailTalkData = async (talkId: number) => {
-  const mockTalkData = talkMockData;
-  const filteredMockTalkData = mockTalkData.filter(
-    (data) => data.talkId === talkId,
-  );
+  const session = await getSession();
+  const user = session.user;
 
-  return filteredMockTalkData ? filteredMockTalkData[0] : null;
+  const talk = await db.talk.findUnique({
+    where: {
+      id: talkId,
+    },
+    select: {
+      id: true,
+      user: { select: { nickname: true } },
+      createdAt: true,
+      content: true,
+      likes: { where: { userId: user?.id } },
+      _count: {
+        select: {
+          likes: true,
+          talkComments: true,
+        },
+      },
+      talkComments: {
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          user: { select: { nickname: true, id: true } },
+          content: true,
+          createdAt: true,
+          likes: { where: { userId: user?.id } },
+          _count: { select: { likes: true, talkCommentReplies: true } },
+          talkCommentReplies: {
+            select: {
+              id: true,
+              user: { select: { nickname: true, id: true } },
+              content: true,
+              createdAt: true,
+              likes: { where: { userId: user?.id } },
+              _count: { select: { likes: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!talk) redirect("/talk");
+
+  const enhancedTalks = {
+    ...talk,
+    totalCommentsCount:
+      talk._count.talkComments +
+      talk.talkComments.reduce((a, c) => a + c._count.talkCommentReplies, 0),
+  };
+
+  return enhancedTalks;
 };
+
+export type Talk = Prisma.PromiseReturnType<typeof getDetailTalkData>;
 
 export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
   const { id: talkId } = params;
@@ -28,41 +81,52 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
     redirect("/talk");
   }
 
+  const curUserId = (await getSession()).user?.id;
+
+  const submitTalkCommentWithTalkId = submitTalkComment.bind(null, talkId);
+
   return (
     <main className="flex justify-center px-24 py-8">
       <div className="w-full max-w-[820px] rounded-xl bg-slate-200 p-[20px]">
         <div className="flex w-full flex-col">
           <TalkDetail
-            key={detailTalkData.talkId}
-            talkId={detailTalkData.talkId}
-            author={detailTalkData.author}
-            formattedData={detailTalkData.formattedData}
+            key={detailTalkData.id}
+            talkId={detailTalkData.id}
+            author={detailTalkData.user.nickname}
+            formattedData={formatToTimeAgo(detailTalkData.createdAt.toString())}
             content={detailTalkData.content}
-            heartCount={detailTalkData.heartCount}
-            commentCount={detailTalkData.commentCount}
-            recentComment={detailTalkData.recentComment}
+            heartCount={detailTalkData._count.likes}
+            commentCount={detailTalkData.totalCommentsCount}
+            isLike={detailTalkData.likes.length > 0}
           />
           <div className="my-1" />
 
           <div className="my-4" />
           <span className="ml-[8px] text-[20px]">
-            댓글 {detailTalkData.comments.length}
+            댓글 {detailTalkData.totalCommentsCount}
           </span>
           <div className="my-1" />
-          <form className="flex items-start gap-3 px-3 pr-6">
+          <form
+            key={Date.now()}
+            action={submitTalkCommentWithTalkId}
+            className="flex items-start gap-3 px-3 pr-6"
+          >
             <div className="aspect-square w-[36px] rounded-full bg-blue-300" />
             <div className="flex w-full flex-col gap-2">
               <input
                 className="w-full border-b-2 border-gray-800 bg-transparent outline-none"
                 name="content"
               />
-              <button className="self-end rounded-xl bg-neutral-50 px-[20px] py-[6px] font-semibold">
-                등록
-              </button>
+              <span className="self-end">
+                <BlueSubmitButton text="등록" />
+              </span>
             </div>
           </form>
           <div className="my-2" />
-          <CommentsArea comments={detailTalkData.comments} />
+          <CommentsArea
+            curUserId={curUserId}
+            comments={detailTalkData.talkComments}
+          />
         </div>
       </div>
     </main>

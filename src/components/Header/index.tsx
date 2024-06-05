@@ -8,10 +8,15 @@ import SVGButton from "../SVGButton";
 import SearchForm from "./SearchForm";
 import BellSVG from "@/icons/BellSVG";
 import UserSVG from "@/icons/UserSVG";
+import { SessionContent } from "@/libs/session";
 
 const HEADER_HEIGHT = 70;
 
-export default function Header() {
+interface HeaderProps {
+  user: SessionContent["user"];
+}
+
+export default function Header({ user }: HeaderProps) {
   const currentY = useScrollY();
   const isScrolled = currentY > 0;
 
@@ -22,7 +27,7 @@ export default function Header() {
   };
 
   const handleUserIconClick = () => {
-    router.push("/log-in");
+    router.push("/user");
   };
 
   return (
@@ -53,6 +58,7 @@ export default function Header() {
           </Link>
         </div>
         <div className="flex items-center space-x-5">
+          {user && <span>Hello, {user.nickname}!</span>}
           <SVGButton svg={BellSVG} size={5} />
           <SVGButton onClick={handleUserIconClick} svg={UserSVG} size={5} />
           <SearchForm theme={isScrolled ? "dark" : "light"} />

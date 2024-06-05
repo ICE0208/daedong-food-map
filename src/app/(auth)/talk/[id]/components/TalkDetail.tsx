@@ -5,6 +5,7 @@ import CommentSVG from "@/icons/CommentSVG";
 import SVGButton from "@/components/SVGButton";
 import EtcButton from "@/components/buttons/EtcButton";
 import { useCallback, useEffect, useState } from "react";
+import { submitTalkLike } from "../../actions";
 
 interface RecentComment {
   author: string;
@@ -18,7 +19,7 @@ interface TalkPreviewProps {
   content: string;
   heartCount: number;
   commentCount: number;
-  recentComment: RecentComment;
+  isLike: boolean;
 }
 
 export default function TalkDetail({
@@ -28,7 +29,7 @@ export default function TalkDetail({
   content,
   heartCount,
   commentCount,
-  recentComment,
+  isLike,
 }: TalkPreviewProps) {
   const [modalActive, setModalActive] = useState(false);
 
@@ -78,7 +79,12 @@ export default function TalkDetail({
         {/* 좋아요, 댓글 아이콘, 개수 */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-[1px]">
-            <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
+            <SVGButton
+              svg={HeartSVG}
+              size={5}
+              color={isLike ? "rgb(252, 84, 151)" : "rgba(252, 84, 151, 0.3)"}
+              onClick={() => submitTalkLike(talkId, isLike)}
+            />
             <span>{heartCount}</span>
           </div>
           <div className="flex items-center gap-[1px]">

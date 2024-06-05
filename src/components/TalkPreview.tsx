@@ -9,9 +9,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { talkPreviewActiveModalState } from "@/app/atoms";
 import withStopPropagation from "@/utils/withStopPropagation";
+import { submitTalkLike } from "@/app/(auth)/talk/actions";
 
 interface RecentComment {
-  author: string;
+  user: { nickname: string };
   content: string;
 }
 
@@ -22,7 +23,8 @@ interface TalkPreviewProps {
   content: string;
   heartCount: number;
   commentCount: number;
-  recentComment: RecentComment;
+  isLike: boolean;
+  recentComment?: RecentComment;
 }
 
 export default function TalkPreview({
@@ -32,6 +34,7 @@ export default function TalkPreview({
   content,
   heartCount,
   commentCount,
+  isLike,
   recentComment,
 }: TalkPreviewProps) {
   const router = useRouter();
@@ -62,7 +65,7 @@ export default function TalkPreview({
 
   return (
     <div
-      className="w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-50 transition hover:scale-[1.01]"
+      className="w-full cursor-pointer overflow-hidden rounded-xl bg-neutral-50 ring-2 ring-gray-300 transition hover:scale-[1.01]"
       onClick={handleTalkPreview}
     >
       <div className="p-6 pb-3">
@@ -105,7 +108,11 @@ export default function TalkPreview({
         {/* 좋아요, 댓글 아이콘, 개수 */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-[1px]">
-            <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
+            <SVGButton
+              svg={HeartSVG}
+              size={5}
+              color={isLike ? "rgb(252, 84, 151)" : "rgba(252, 84, 151, 0.3)"}
+            />
             <span>{heartCount}</span>
           </div>
           <div className="flex items-center gap-[1px]">
@@ -117,8 +124,17 @@ export default function TalkPreview({
       {/* 최근 댓글 */}
       <div className="overflow-hidden text-ellipsis text-nowrap bg-neutral-300 px-6 py-2">
         <span className="font-semibold">최근 댓글 | </span>
-        <span className="font-semibold">{recentComment.author} : </span>
-        <span>{recentComment.content}</span>
+
+        {recentComment ? (
+          <>
+            <span className="font-semibold">
+              {recentComment.user.nickname} :{" "}
+            </span>
+            <span>{recentComment.content}</span>
+          </>
+        ) : (
+          <span>댓글이 없습니다.</span>
+        )}
       </div>
     </div>
   );

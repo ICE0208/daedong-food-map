@@ -6,6 +6,7 @@ import EtcButton from "./buttons/EtcButton";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { reviewPreviewActiveModalState } from "@/app/atoms";
 import { useCallback, useEffect } from "react";
+import { submitReviewLike } from "@/app/(auth)/review/actions";
 
 interface ReviewPreviewProps {
   reviewId: number;
@@ -15,6 +16,7 @@ interface ReviewPreviewProps {
   heartCount: number;
   restaurantName: string;
   rate: number;
+  isLike: boolean;
 }
 
 export default function ReviewPreview({
@@ -25,6 +27,7 @@ export default function ReviewPreview({
   heartCount,
   restaurantName,
   rate,
+  isLike,
 }: ReviewPreviewProps) {
   const [modalActive, setModalActive] = useRecoilState(
     reviewPreviewActiveModalState,
@@ -47,7 +50,7 @@ export default function ReviewPreview({
   }, [windowClick]);
 
   return (
-    <div className="w-full overflow-hidden rounded-xl bg-neutral-50">
+    <div className="w-full overflow-hidden rounded-xl bg-neutral-50 ring-2 ring-gray-300">
       <div className="p-6 pb-3">
         {/* 프로필 */}
         {/* 프로필 */}
@@ -104,7 +107,12 @@ export default function ReviewPreview({
         {/* 좋아요 아이콘, 개수 */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-[1px]">
-            <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
+            <SVGButton
+              svg={HeartSVG}
+              size={5}
+              color={isLike ? "rgb(252, 84, 151)" : "rgba(252, 84, 151, 0.3)"}
+              onClick={() => submitReviewLike(reviewId, isLike)}
+            />
             <span>{heartCount}</span>
           </div>
         </div>

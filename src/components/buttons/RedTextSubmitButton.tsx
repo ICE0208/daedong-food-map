@@ -8,7 +8,7 @@ interface ButtonProps {
   text: string;
 }
 
-export default function BlueSubmitButton({
+export default function RedTextSubmitButton({
   text,
   onClick,
 }: ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>) {
@@ -16,15 +16,12 @@ export default function BlueSubmitButton({
 
   return (
     <button
-      className={cls(
-        "rounded-xl bg-blue-600 px-6 py-2 text-white",
-        "hover:bg-blue-700 disabled:bg-blue-400 disabled:hover:bg-blue-400",
-      )}
+      className={cls("rounded-xl p-2 text-red-500")}
       onClick={onClick}
       disabled={pending}
     >
       {pending ? (
-        <div className="flex items-center justify-center gap-[4px]">
+        <div className="flex items-center gap-[4px]">
           <span>로딩중</span>
           <div className="mx-[4px] animate-spin text-[8px] font-semibold">
             |

@@ -5,8 +5,8 @@ import LinkSVG from "@/icons/LinkSVG";
 import XMarkSVG from "@/icons/XMarkSVG";
 import { SearchKeywordResponse } from "@/types/apiTypes";
 import formatCategoryName from "@/utils/splitCategory";
-import { useRouter } from "next/navigation";
 import { Roadview } from "react-kakao-maps-sdk";
+import { routeRestaurantDetail } from "../actions";
 
 interface ModalProps {
   selectedId: string;
@@ -15,8 +15,6 @@ interface ModalProps {
 }
 
 const Modal = ({ selectedId, onExit, data }: ModalProps) => {
-  const router = useRouter();
-
   if (!data) return <div>Error</div>;
 
   return (
@@ -30,9 +28,7 @@ const Modal = ({ selectedId, onExit, data }: ModalProps) => {
           <SVGButton
             svg={LinkSVG}
             size={7}
-            onClick={() => {
-              router.push(`/restaurant/${data.id}`);
-            }}
+            onClick={() => routeRestaurantDetail(data)}
           />
           <SVGButton svg={XMarkSVG} size={8} onClick={onExit} />
         </div>

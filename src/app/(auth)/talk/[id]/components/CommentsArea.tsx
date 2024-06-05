@@ -2,25 +2,17 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CommentWithReplies from "./CommentWithReplies";
+import { Talk } from "../page";
 
 interface CommentsAreaProps {
-  comments: {
-    commentId: number;
-    author: string;
-    content: string;
-    formattedData: string;
-    heartCount: number;
-    replies: {
-      commentId: number;
-      author: string;
-      content: string;
-      formattedData: string;
-      heartCount: number;
-    }[];
-  }[];
+  curUserId?: string;
+  comments: Talk["talkComments"];
 }
 
-export default function CommentsArea({ comments }: CommentsAreaProps) {
+export default function CommentsArea({
+  curUserId,
+  comments,
+}: CommentsAreaProps) {
   const activeState = useState(-1);
   const [_, setActive] = useMemo(() => activeState, [activeState]);
 
@@ -45,9 +37,10 @@ export default function CommentsArea({ comments }: CommentsAreaProps) {
         <div className="space-y-3">
           {comments.map((comment, index) => (
             <CommentWithReplies
-              activeState={activeState}
               key={index}
-              {...comment}
+              activeState={activeState}
+              curUserId={curUserId}
+              comment={comment}
             />
           ))}
         </div>
