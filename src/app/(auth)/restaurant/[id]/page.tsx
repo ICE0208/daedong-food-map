@@ -12,6 +12,8 @@ import RedTextSubmitButton from "@/components/buttons/RedTextSubmitButton";
 import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
 import getSession from "@/libs/session";
 import Link from "next/link";
+import categoryToImageUrl from "@/utils/categoryToImageUrl"; // 추가
+import Image from "next/image"; // next/image 추가
 
 interface RestaurantPageProps {
   params: {
@@ -46,14 +48,25 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
   const submitReviewWithRestaurantIdId = submitReview.bind(null, id);
 
+  // 카테고리에 맞는 이미지 URL 가져오기
+  const imageUrl = categoryToImageUrl(data.category);
+
   return (
     <main className="flex w-full flex-1 px-32 py-12">
       <div className="relative flex w-full gap-8">
         <div className="relative w-full overflow-hidden rounded-xl bg-neutral-50 p-14">
           {/* 식당 정보 */}
           <div className="flex gap-8">
-            {/* 관련 이미지 */}
-            <div className="size-[200px] rounded-md bg-gray-200" />
+            {/* 식당 이미지 */}
+            <div className="relative size-[200px]">
+              <Image
+                src={imageUrl}
+                alt={data.name}
+                layout="fill"
+                objectFit="cover"
+                className="p-2"
+              />
+            </div>
             {/* 식당 데이터 */}
             <div className="flex flex-col py-2">
               <h1 className="mb-2 text-[42px] font-semibold ">{data.name}</h1>
