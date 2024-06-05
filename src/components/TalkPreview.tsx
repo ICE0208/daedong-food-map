@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { talkPreviewActiveModalState } from "@/app/atoms";
 import withStopPropagation from "@/utils/withStopPropagation";
+import { submitTalkLike } from "@/app/(auth)/talk/actions";
 
 interface RecentComment {
   user: { nickname: string };
@@ -22,6 +23,7 @@ interface TalkPreviewProps {
   content: string;
   heartCount: number;
   commentCount: number;
+  isLike: boolean;
   recentComment?: RecentComment;
 }
 
@@ -32,6 +34,7 @@ export default function TalkPreview({
   content,
   heartCount,
   commentCount,
+  isLike,
   recentComment,
 }: TalkPreviewProps) {
   const router = useRouter();
@@ -105,7 +108,11 @@ export default function TalkPreview({
         {/* 좋아요, 댓글 아이콘, 개수 */}
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-[1px]">
-            <SVGButton svg={HeartSVG} size={5} color="rgb(252, 84, 151)" />
+            <SVGButton
+              svg={HeartSVG}
+              size={5}
+              color={isLike ? "rgb(252, 84, 151)" : "rgba(252, 84, 151, 0.3)"}
+            />
             <span>{heartCount}</span>
           </div>
           <div className="flex items-center gap-[1px]">

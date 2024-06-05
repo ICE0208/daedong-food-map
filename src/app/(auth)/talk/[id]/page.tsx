@@ -90,6 +90,7 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
             content={detailTalkData.content}
             heartCount={detailTalkData._count.likes}
             commentCount={detailTalkData._count.talkComments}
+            isLike={detailTalkData.likes.length > 0}
           />
           <div className="my-1" />
 

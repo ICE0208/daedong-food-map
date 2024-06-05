@@ -3,11 +3,15 @@ import SVGButton from "@/components/SVGButton";
 import TalkPreview from "@/components/TalkPreview";
 import PencilSVG from "@/icons/PencilSVG";
 import db from "@/libs/db";
+import getSession from "@/libs/session";
 import cls from "@/utils/cls";
 import { formatToTimeAgo } from "@/utils/formatToTimeAgo";
 import Link from "next/link";
 
 const getTalkData = async () => {
+  const session = await getSession();
+  const user = session.user;
+
   const talks = await db.talk.findMany({
     orderBy: { createdAt: "desc" },
     select: {
@@ -17,6 +21,7 @@ const getTalkData = async () => {
       },
       content: true,
       createdAt: true,
+      likes: { where: { userId: user?.id } },
       _count: {
         select: {
           likes: true,
@@ -68,6 +73,7 @@ export default async function TalkPage() {
               content={data.content}
               heartCount={data._count.likes}
               commentCount={data.totalCommentsCount}
+              isLike={data.likes.length > 0}
               recentComment={data.talkComments[0]}
             />
           ))}
