@@ -29,7 +29,7 @@ function UserPageClient({
 
   return (
     <main className="p flex w-full flex-1 justify-center px-48 py-20">
-      <div className="min-h-[1400px] w-full max-w-[1200px] rounded-3xl bg-neutral-50 p-20">
+      <div className="min-h-[1400px] w-full max-w-[1200px] rounded-3xl bg-neutral-50 px-32 py-20">
         {/* User Uinfo */}
         <div className="flex flex-col">
           <span className="text-[50px] font-semibold">{userInfo.nickname}</span>

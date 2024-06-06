@@ -56,7 +56,7 @@ function SearchPage() {
 
   return (
     <main className="p flex w-full flex-1 justify-center px-48 py-20">
-      <div className="min-h-[1400px] w-full max-w-[1200px] rounded-3xl bg-neutral-50 p-20">
+      <div className="min-h-[1400px] w-full max-w-[1200px] rounded-3xl bg-neutral-50 px-32 py-20">
         <div className="flex flex-col">
           <span className="text-[50px] font-semibold">{search}</span>
           <span className="text-[18px]">검색 결과</span>
