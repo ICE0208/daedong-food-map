@@ -46,7 +46,16 @@ export const searchReviewAction = async (query: string) => {
   const result = await db.review.findMany({
     orderBy: { createdAt: "desc" },
     where: {
-      content: { contains: query },
+      OR: [
+        {
+          content: { contains: query },
+        },
+        {
+          restaurant: {
+            name: { contains: query },
+          },
+        },
+      ],
     },
     include: {
       user: { select: { nickname: true } },
