@@ -12,7 +12,7 @@ export const searchTalkAction = async (query: string) => {
   const result = await db.talk.findMany({
     orderBy: { createdAt: "desc" },
     where: {
-      content: { contains: query },
+      content: { contains: query, mode: "insensitive" },
     },
     include: {
       user: { select: { nickname: true } },
@@ -48,11 +48,11 @@ export const searchReviewAction = async (query: string) => {
     where: {
       OR: [
         {
-          content: { contains: query },
+          content: { contains: query, mode: "insensitive" },
         },
         {
           restaurant: {
-            name: { contains: query },
+            name: { contains: query, mode: "insensitive" },
           },
         },
       ],
