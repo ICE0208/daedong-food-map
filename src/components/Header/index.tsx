@@ -3,7 +3,7 @@
 import useScrollY from "@/hooks/useScrollY";
 import cls from "@/utils/cls";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import SVGButton from "../SVGButton";
 import SearchForm from "./SearchForm";
 import BellSVG from "@/icons/BellSVG";
@@ -21,6 +21,8 @@ export default function Header({ user }: HeaderProps) {
   const isScrolled = currentY > 0;
 
   const router = useRouter();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   const handleLogoClick = () => {
     router.push("/");
@@ -30,13 +32,15 @@ export default function Header({ user }: HeaderProps) {
     router.push("/user");
   };
 
+  const activeBgWhite = isHome || isScrolled;
+
   return (
     <div className="text-white" style={{ height: `${HEADER_HEIGHT}px` }}>
       <div
         className={cls(
           "fixed z-50 flex w-full items-center justify-between bg-white bg-opacity-0 px-4",
           "transition-all duration-300 ease-in-out",
-          `${isScrolled && "bg-opacity-100 text-black"}`,
+          `${activeBgWhite && "bg-opacity-100 text-black"}`,
         )}
         style={{ height: `${HEADER_HEIGHT}px` }}
       >
@@ -61,7 +65,7 @@ export default function Header({ user }: HeaderProps) {
           {user && <span>Hello, {user.nickname}!</span>}
           <SVGButton svg={BellSVG} size={5} />
           <SVGButton onClick={handleUserIconClick} svg={UserSVG} size={5} />
-          <SearchForm theme={isScrolled ? "dark" : "light"} />
+          <SearchForm theme={activeBgWhite ? "dark" : "light"} />
         </div>
       </div>
     </div>
