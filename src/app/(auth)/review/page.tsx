@@ -15,7 +15,7 @@ const getReviewData = async () => {
         select: { nickname: true },
       },
       restaurant: {
-        select: { name: true },
+        select: { name: true, id: true },
       },
       rating: true,
       createdAt: true,
@@ -55,6 +55,7 @@ export default async function ReviewPage() {
               content={data.content}
               heartCount={data._count.likes}
               restaurantName={data.restaurant.name}
+              restaurantId={data.restaurant.id}
               rate={data.rating}
               isLike={data.likes.length > 0}
             />

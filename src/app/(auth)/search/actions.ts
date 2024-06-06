@@ -61,7 +61,7 @@ export const searchReviewAction = async (query: string) => {
       user: { select: { nickname: true } },
       likes: { where: { userId: user?.id } },
       _count: { select: { likes: true } },
-      restaurant: { select: { name: true } },
+      restaurant: { select: { name: true, id: true } },
     },
   });
 

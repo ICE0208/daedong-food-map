@@ -7,6 +7,7 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { reviewPreviewActiveModalState } from "@/app/atoms";
 import { useCallback, useEffect } from "react";
 import { submitReviewLike } from "@/app/actions";
+import Link from "next/link";
 
 interface ReviewPreviewProps {
   reviewId: number;
@@ -15,6 +16,7 @@ interface ReviewPreviewProps {
   content: string;
   heartCount: number;
   restaurantName: string;
+  restaurantId: number;
   rate: number;
   isLike: boolean;
 }
@@ -26,6 +28,7 @@ export default function ReviewPreview({
   content,
   heartCount,
   restaurantName,
+  restaurantId,
   rate,
   isLike,
 }: ReviewPreviewProps) {
@@ -88,7 +91,7 @@ export default function ReviewPreview({
         {/* 식당 이름 */}
         <div className="text-[17px]">
           <span className="font-semibold">{"식당 이름: "}</span>
-          <span>{restaurantName}</span>
+          <Link href={`/restaurant/${restaurantId}`}>{restaurantName}</Link>
         </div>
 
         {/* 평점*/}

@@ -96,6 +96,7 @@ function SearchPageClient({
                   heartCount={review._count.likes}
                   rate={review.rating}
                   restaurantName={review.restaurant.name}
+                  restaurantId={review.restaurantId}
                   reviewId={review.id}
                 />
               ))}
@@ -129,6 +130,7 @@ function SearchPageClient({
                     heartCount={item._count.likes}
                     rate={item.rating}
                     restaurantName={item.restaurant.name}
+                    restaurantId={item.restaurantId}
                     reviewId={item.id}
                   />
                 ),

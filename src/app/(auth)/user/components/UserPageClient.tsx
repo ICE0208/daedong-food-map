@@ -125,6 +125,7 @@ function UserPageClient({
                   heartCount={review._count.likes}
                   rate={review.rating}
                   restaurantName={review.restaurant.name}
+                  restaurantId={review.restaurantId}
                   reviewId={review.id}
                 />
               ))}
@@ -148,6 +149,7 @@ function UserPageClient({
                     heartCount={review._count.likes}
                     rate={review.rating}
                     restaurantName={review.restaurant.name}
+                    restaurantId={review.restaurantId}
                     reviewId={review.id}
                   />
                 );
