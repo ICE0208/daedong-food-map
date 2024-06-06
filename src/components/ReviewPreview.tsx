@@ -6,7 +6,7 @@ import EtcButton from "./buttons/EtcButton";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { reviewPreviewActiveModalState } from "@/app/atoms";
 import { useCallback, useEffect } from "react";
-import { submitReviewLike } from "@/app/(auth)/review/actions";
+import { submitReviewLike } from "@/app/actions";
 
 interface ReviewPreviewProps {
   reviewId: number;
