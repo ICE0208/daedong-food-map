@@ -13,6 +13,24 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        "jacksons-purple": {
+          "50": "#ecf2ff",
+          "100": "#dce8ff",
+          "200": "#c1d3ff",
+          "300": "#9bb5ff",
+          "400": "#738cff",
+          "500": "#5263ff",
+          "600": "#3337f8",
+          "700": "#2728db",
+          "800": "#2224b1",
+          "900": "#232786",
+          "950": "#151651",
+        },
+      },
+    },
+    fontFamily: {
+      BMHANNAPro: ["BMHANNAPro"],
     },
   },
   plugins: [],

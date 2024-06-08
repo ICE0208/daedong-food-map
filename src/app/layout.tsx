@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "대동밥지도",
+  title: {
+    template: "대동밥지도 > %s",
+    default: "대동밥지도",
+  },
   description: "한국의 식당 정보 기반의 커뮤니티",
 };
 
@@ -13,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className="bg-jacksons-purple-400">{children}</body>
     </html>
   );
 }

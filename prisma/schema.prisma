@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model User {
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  email    String
+  nickname String
+  password String
+  gender   Gender?
+  age      Int?
+  address  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reviews               Review[]
+  talks                 Talk[]
+  talkComments          TalkComment[]
+  talkCommentReplies    TalkCommentReply[]
+  reviewLikes           ReviewLike[]
+  talkLikes             TalkLike[]
+  talkCommentLikes      TalkCommentLike[]
+  talkCommentReplyLikes TalkCommentReplyLike[]
+}
+
+model Restaurant {
+  id       Int    @id
+  name     String
+  address  String
+  category String
+  phone    String
+
+  createdAt DateTime @default(now())
+
+  reviews Review[]
+}
+
+model Review {
+  id      Int    @id @default(autoincrement())
+  content String
+  rating  Int
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  restaurantId Int
+
+  likes ReviewLike[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, restaurantId])
+}
+
+model Talk {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  talkComments TalkComment[]
+  likes        TalkLike[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TalkComment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+  talk   Talk   @relation(fields: [talkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkId Int
+
+  talkCommentReplies TalkCommentReply[]
+  likes              TalkCommentLike[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TalkCommentReply {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        String
+  talkComment   TalkComment @relation(fields: [talkCommentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkCommentId Int
+
+  likes TalkCommentReplyLike[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ReviewLike {
+  id       Int    @id @default(autoincrement())
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  reviewId Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reviewId])
+}
+
+model TalkLike {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+  talk   Talk   @relation(fields: [talkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkId Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, talkId])
+}
+
+model TalkCommentLike {
+  id            Int         @id @default(autoincrement())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        String
+  talkComment   TalkComment @relation(fields: [talkCommentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkCommentId Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, talkCommentId])
+}
+
+model TalkCommentReplyLike {
+  id                 Int              @id @default(autoincrement())
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId             String
+  talkCommentReply   TalkCommentReply @relation(fields: [talkCommentReplyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  talkCommentReplyId Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, talkCommentReplyId])
+}
