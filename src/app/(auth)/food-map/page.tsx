@@ -7,16 +7,15 @@ import KakaoMap from "./components/KakaoMap";
 import RestaurantListViewer from "./components/RestaurantListViewer";
 import Modal from "./components/Modal";
 
+const INIT_POSITION = { lat: 36.79882414199912, lng: 127.07590287342681 };
+
 export interface Position {
   lat: number;
   lng: number;
 }
 
 export default function FoodMapPage() {
-  const [position, setPosition] = useState<Position>({
-    lat: 33.450701,
-    lng: 126.570667,
-  });
+  const [position, setPosition] = useState<Position>(INIT_POSITION);
   const [data, setData] = useState<SearchKeywordResponse | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
