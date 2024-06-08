@@ -14,6 +14,7 @@ import getSession from "@/libs/session";
 import Link from "next/link";
 import categoryToImageUrl from "@/utils/categoryToImageUrl"; // 추가
 import Image from "next/image"; // next/image 추가
+import RateStarDisplay from "@/components/RateStarDisplay";
 
 interface RestaurantPageProps {
   params: {
@@ -172,7 +173,8 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
                   <span className="text-xl font-semibold">
                     {review.user.nickname}
                   </span>
-                  <span className="break-words">{review.content}</span>
+                  <RateStarDisplay rate={review.rating} />
+                  <span className="mt-1 break-words">{review.content}</span>
                   <span className="mt-1 text-[13px] text-neutral-500">
                     {formatToTimeAgo(review.createdAt.toString())}
                   </span>
