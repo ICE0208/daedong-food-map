@@ -21,7 +21,7 @@ const getTalkData = async () => {
       },
       content: true,
       createdAt: true,
-      likes: { where: { userId: user?.id } },
+      likes: user?.id ? { where: { userId: user.id } } : { take: 0 },
       _count: {
         select: {
           likes: true,

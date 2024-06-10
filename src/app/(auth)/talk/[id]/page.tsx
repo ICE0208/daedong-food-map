@@ -28,7 +28,7 @@ const getDetailTalkData = async (talkId: number) => {
       user: { select: { nickname: true } },
       createdAt: true,
       content: true,
-      likes: { where: { userId: user?.id } },
+      likes: user?.id ? { where: { userId: user.id } } : { take: 0 },
       _count: {
         select: {
           likes: true,
@@ -42,7 +42,7 @@ const getDetailTalkData = async (talkId: number) => {
           user: { select: { nickname: true, id: true } },
           content: true,
           createdAt: true,
-          likes: { where: { userId: user?.id } },
+          likes: user?.id ? { where: { userId: user.id } } : { take: 0 },
           _count: { select: { likes: true, talkCommentReplies: true } },
           talkCommentReplies: {
             select: {
@@ -50,7 +50,7 @@ const getDetailTalkData = async (talkId: number) => {
               user: { select: { nickname: true, id: true } },
               content: true,
               createdAt: true,
-              likes: { where: { userId: user?.id } },
+              likes: user?.id ? { where: { userId: user.id } } : { take: 0 },
               _count: { select: { likes: true } },
             },
           },
@@ -80,6 +80,8 @@ export default async function TalkDetailPage({ params }: TalkDetailPageProps) {
   if (!detailTalkData) {
     redirect("/talk");
   }
+
+  console.log(detailTalkData);
 
   const curUserId = (await getSession()).user?.id;
 
