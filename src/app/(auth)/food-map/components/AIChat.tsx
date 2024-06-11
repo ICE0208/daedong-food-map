@@ -143,6 +143,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
               <button
                 className="w-11/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
                 onClick={() => handleSubmit(undefined, "주변 치킨집을 알려줘")}
+                disabled={!Boolean(restaurantsData)}
               >
                 주변 치킨집을 알려줘
               </button>
@@ -151,12 +152,14 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
                 onClick={() =>
                   handleSubmit(undefined, "분식먹고 싶은데 추천해줘.")
                 }
+                disabled={!Boolean(restaurantsData)}
               >
                 분식먹고 싶은데 추천해줘.
               </button>
               <button
                 className="w-11/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
                 onClick={() => handleSubmit(undefined, "오늘은 매운게 땡기네.")}
+                disabled={!Boolean(restaurantsData)}
               >
                 오늘은 매운게 땡기네.
               </button>
@@ -177,10 +180,10 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
           minLength={1}
           maxLength={50}
           placeholder="주변 음식점에 대해 질문하기"
-          disabled={isDoneLoading}
+          disabled={isDoneLoading || !Boolean(restaurantsData)}
         />
         <button
-          disabled={isDoneLoading}
+          disabled={isDoneLoading || !Boolean(restaurantsData)}
           className="text-nowrap px-2 text-lg font-medium"
         >
           전송
