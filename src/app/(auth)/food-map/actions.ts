@@ -109,3 +109,62 @@ export const routeRestaurantDetail = async (
 
   redirect(`/restaurant/${data.id}`);
 };
+
+const GPT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
+
+export const generateMessage = async (
+  message: string,
+  data: SearchKeywordResponse["documents"] | undefined,
+): Promise<string | null> => {
+  if (!data) {
+    console.log("data가 없음.");
+    return null;
+  }
+
+  if (message.length > 50) return null;
+
+  try {
+    const recommendations = data.map((doc) => ({
+      place_name: doc.place_name,
+      address_name: doc.address_name,
+      category_name: doc.category_name,
+      distance: doc.distance,
+    }));
+
+    const systemMessage = {
+      role: "system",
+      content:
+        "You are an assistant that helps recommend restaurants based on user preferences. Do not include any links in your responses. Respond in Korean.",
+    };
+
+    const userMessage = {
+      role: "user",
+      content: message,
+    };
+
+    const assistantMessage = {
+      role: "assistant",
+      content: `Here is the restaurant data: ${JSON.stringify(recommendations)}. Based on the user's message, please recommend some restaurants without including any links.`,
+    };
+
+    const response = await fetch(GPT_API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [systemMessage, userMessage, assistantMessage],
+      }),
+    });
+
+    const result = await response.json();
+
+    // 응답에서 적절한 내용을 반환
+    return result.choices[0].message.content;
+  } catch (error) {
+    console.error("Error generating message:", error);
+    return null;
+  }
+};

@@ -6,6 +6,7 @@ import { SearchKeywordResponse } from "@/types/apiTypes";
 import KakaoMap from "./components/KakaoMap";
 import RestaurantListViewer from "./components/RestaurantListViewer";
 import Modal from "./components/Modal";
+import AIChat from "./components/AIChat";
 
 const INIT_POSITION = { lat: 36.79882414199912, lng: 127.07590287342681 };
 
@@ -47,6 +48,7 @@ export default function FoodMapPage() {
             setSelectedId={setSelectedId}
           />
         </div>
+        <AIChat restaurantsData={data?.documents} />
         <RestaurantListViewer
           restaurantsData={data?.documents}
           setSelectedId={setSelectedId}
