@@ -1,6 +1,7 @@
 "use client";
 
 import { SearchKeywordResponse } from "@/types/apiTypes";
+import Image from "next/image";
 import { FormEvent, useState, useEffect, useRef } from "react";
 
 const INIT_MESSAGES: Message[] = [
@@ -129,6 +130,15 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
           <div ref={messagesEndRef} />
           {messages.length < 2 && (
             <div className="absolute bottom-0 flex w-full flex-col items-center gap-2 py-2">
+              <div className="mb-2 w-[100px]">
+                <Image
+                  src="/assets/images/chatbot.png"
+                  alt="chat-bot"
+                  width={512}
+                  height={512}
+                  className="p-1"
+                />
+              </div>
               <h3 className="text-xl font-semibold">- 추천 질문 -</h3>
               <button
                 className="w-10/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
