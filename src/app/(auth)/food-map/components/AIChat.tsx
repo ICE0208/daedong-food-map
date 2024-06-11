@@ -152,23 +152,21 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
                 onClick={() => handleSubmit(undefined, "주변 치킨집을 알려줘")}
                 disabled={!Boolean(restaurantsData)}
               >
-                주변 치킨집을 알려줘
+                주변 치킨집을 알려줘 🍗
               </button>
               <button
                 className="w-11/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
-                onClick={() =>
-                  handleSubmit(undefined, "분식먹고 싶은데 추천해줘.")
-                }
+                onClick={() => handleSubmit(undefined, "돈까스 먹고 싶다")}
                 disabled={!Boolean(restaurantsData)}
               >
-                분식먹고 싶은데 추천해줘.
+                돈까스 먹고 싶다 🐷
               </button>
               <button
                 className="w-11/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
-                onClick={() => handleSubmit(undefined, "오늘은 매운게 땡기네.")}
+                onClick={() => handleSubmit(undefined, "오늘은 매운게 땡기네")}
                 disabled={!Boolean(restaurantsData)}
               >
-                오늘은 매운게 땡기네.
+                오늘은 매운게 땡기네 🔥
               </button>
             </div>
           )}
