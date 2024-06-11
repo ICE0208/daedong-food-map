@@ -71,17 +71,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const recommendations = data.map((doc: any) => ({
-      place_name: doc.place_name,
-      address_name: doc.address_name,
-      category_name: doc.category_name,
-      distance: doc.distance,
-    }));
-
     const systemMessage = {
       role: ChatCompletionRequestMessageRoleEnum.System,
       content:
-        "You are an assistant that recommends restaurants based on provided data. You must only use the provided restaurant data for recommendations and not create or fabricate any additional information. Respond in Korean and keep your response within 300 characters including spaces. Speak in a kind, gentle, and friendly tone using emojis and wave symbols (~), and occasionally say nice things to the user. If you don't know something or if the data is not available, say there are no such restaurants nearby in a friendly manner.",
+        "You are an assistant that recommends restaurants based on provided data. You must use only the provided restaurant data for recommendations and not create or fabricate any additional information. Respond in Korean and keep your response within 300 characters including spaces. Speak in a kind, gentle, and friendly tone using emojis and wave symbols (~), and occasionally say nice things to the user. Always check the provided data carefully before stating that a certain type of restaurant is not available. If a specific type of restaurant is requested, ensure to look for related keywords in the provided data and recommend restaurants that serve the requested type of food, even if it is not a specialty. Restaurants provide as many restaurants as possible, but provide as much relevant restaurant information as possible and limit it to a maximum of three.",
     };
 
     const userMessage = {
@@ -91,7 +84,7 @@ export async function POST(request: Request) {
 
     const assistantMessage = {
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
-      content: `다음은 사용자가 제공한 식당 데이터입니다: ${JSON.stringify(recommendations)}. 이 데이터를 바탕으로 식당을 추천해 주세요. 응답은 띄어쓰기 포함 300자 이내로 작성해 주세요. `,
+      content: `Here are the restaurant data provided by the user: ${JSON.stringify(data)}. Please recommend a restaurant based on this data.`,
     };
 
     const response = await openai.createChatCompletion({
@@ -113,15 +106,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const reader = response.body.getReader();
+    const reader = response.body?.getReader();
     const decoder = new TextDecoder("utf-8");
+    let done = false;
+
     const stream = new ReadableStream({
       async start(controller) {
-        let done = false;
         let buffer = "";
         while (!done) {
-          const { value, done: doneReading } = await reader.read();
-          done = doneReading;
+          const { value, done: readerDone } = await reader.read();
+          done = readerDone;
           if (value) {
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer
