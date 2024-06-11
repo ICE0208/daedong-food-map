@@ -17,7 +17,7 @@ export default function RestaurantListViewer({
   setHoveredId,
 }: RestaurantListViewerProps) {
   return (
-    <div className="absolute right-4 z-50 hidden h-[96%] w-[360px] self-center overflow-hidden rounded-xl bg-neutral-100/90 shadow-xl xl:block">
+    <div className="absolute right-4 z-50 hidden h-[96%] w-[320px] self-center overflow-hidden rounded-xl bg-neutral-100/90 shadow-xl xl:block">
       <div className="absolute flex h-full w-full flex-col items-center overflow-y-auto pb-10 pt-6">
         <h3 className="mb-3 py-3 text-[30px] font-semibold">식당 목록</h3>
         <div
@@ -51,7 +51,7 @@ const RestaurantListItem = ({
 
   return (
     <div
-      className="flex w-full cursor-pointer gap-3 px-10 py-4 hover:bg-white"
+      className="lr-2 flex w-full cursor-pointer gap-3 py-4 pl-6 hover:bg-white"
       onClick={onClick}
       onMouseEnter={onMouseEnter}
     >
