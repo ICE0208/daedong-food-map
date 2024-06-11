@@ -23,7 +23,8 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
   const [messageId, setMessageId] = useState<number>(2);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDoneLoading, setIsDoneLoading] = useState(false);
+  const [isStartLoading, setIsStartLoading] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -35,11 +36,12 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isLoading) return;
+    if (isDoneLoading) return;
     const trimValue = value.trim();
     if (trimValue.length === 0) return setValue("");
     setError(null);
-    setIsLoading(true);
+    setIsDoneLoading(true);
+    setIsStartLoading(true);
 
     const userMessage: Message = {
       id: messageId,
@@ -58,11 +60,12 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
         },
         body: JSON.stringify({ message: trimValue, data: restaurantsData }),
       });
+      setIsStartLoading(false);
 
       if (!response.ok) {
         const errorMessage = await response.json();
         setError(errorMessage.message);
-        setIsLoading(false);
+        setIsDoneLoading(false);
         return;
       }
 
@@ -101,14 +104,15 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
       console.error("Error generating message:", error);
       setError("응답 생성 중 오류가 발생했습니다.");
     } finally {
-      setIsLoading(false);
+      setIsDoneLoading(false);
+      setIsStartLoading(false);
     }
   };
 
   return (
     <div className="absolute left-4 top-4 z-10 flex h-[600px] w-[360px] flex-col items-center rounded-xl bg-neutral-100/90 py-4 shadow-xl">
       <span className="text-3xl font-semibold">AI Chat</span>
-      <div className="my-2 flex w-full flex-1 flex-col gap-2 overflow-y-auto px-6 py-2">
+      <div className="my-2 flex w-full flex-1 flex-col gap-3 overflow-y-auto px-6 py-2">
         <>
           {messages.map((message) => (
             <Message
@@ -117,6 +121,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
               content={message.content}
             />
           ))}
+          {isStartLoading && <Message type="AI" content="생각중..." />}
           {error && <Message type="AI_ERROR" content={error} />}
           <div ref={messagesEndRef} />
         </>
@@ -127,15 +132,17 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
       >
         <input
           className="w-full rounded-lg border-2 px-2 py-1 font-medium outline-none"
-          value={value}
+          value={isDoneLoading ? "답변 생성중" : value}
+          style={isDoneLoading ? { color: "gray" } : {}}
           onChange={(e) => setValue(e.currentTarget.value)}
           required
           minLength={1}
           maxLength={50}
           placeholder="내 취향 입력하기"
+          disabled={isDoneLoading}
         />
         <button
-          disabled={isLoading}
+          disabled={isDoneLoading}
           className="text-nowrap px-2 text-lg font-medium"
         >
           전송
@@ -160,7 +167,7 @@ const Message = ({
 
   return (
     <div
-      className={`max-w-[80%] rounded-lg px-3 py-2 ${messageStyles[type]} text-pretty break-words border-[1px] border-black/5 font-medium shadow-sm`}
+      className={`max-w-[80%] whitespace-pre-wrap rounded-lg px-3 py-2 ${messageStyles[type]} text-pretty break-words border-[1px] border-black/5 font-medium shadow-sm`}
     >
       {content}
     </div>
