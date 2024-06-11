@@ -34,10 +34,13 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
     scrollToBottom();
   }, [messages, error]);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (
+    e?: FormEvent<HTMLFormElement>,
+    presetMessage?: string,
+  ) => {
+    if (e) e.preventDefault();
     if (isDoneLoading) return;
-    const trimValue = value.trim();
+    const trimValue = presetMessage ? presetMessage : value.trim();
     if (trimValue.length === 0) return setValue("");
     setError(null);
     setIsDoneLoading(true);
@@ -112,8 +115,8 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
   return (
     <div className="absolute left-4 top-4 z-10 flex h-[600px] w-[360px] flex-col items-center rounded-xl bg-neutral-100/90 py-4 shadow-xl">
       <span className="text-3xl font-semibold">AI Chat</span>
-      <div className="my-2 flex w-full flex-1 flex-col gap-3 overflow-y-auto px-6 py-2">
-        <>
+      <div className="my-2 flex w-full flex-1 flex-col overflow-y-auto px-6 py-2">
+        <div className="relative flex flex-1 flex-col gap-3">
           {messages.map((message) => (
             <Message
               key={message.id}
@@ -124,7 +127,32 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
           {isStartLoading && <Message type="AI" content="생각중..." />}
           {error && <Message type="AI_ERROR" content={error} />}
           <div ref={messagesEndRef} />
-        </>
+          {messages.length < 2 && (
+            <div className="absolute bottom-0 flex w-full flex-col items-center gap-2 py-2">
+              <h3 className="text-xl font-semibold">- 추천 질문 -</h3>
+              <button
+                className="w-10/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
+                onClick={() => handleSubmit(undefined, "주변 치킨집을 알려줘")}
+              >
+                주변 치킨집을 알려줘
+              </button>
+              <button
+                className="w-10/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
+                onClick={() =>
+                  handleSubmit(undefined, "분식먹고 싶은데 추천해줘.")
+                }
+              >
+                분식먹고 싶은데 추천해줘.
+              </button>
+              <button
+                className="w-10/12 rounded-xl bg-white/80 py-2 font-medium shadow-md"
+                onClick={() => handleSubmit(undefined, "오늘은 매운게 땡기네.")}
+              >
+                오늘은 매운게 땡기네.
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       <form
         className="flex w-full items-center justify-center px-4"
@@ -138,7 +166,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
           required
           minLength={1}
           maxLength={50}
-          placeholder="내 취향 입력하기"
+          placeholder="주변 음식점에 대해 질문하기"
           disabled={isDoneLoading}
         />
         <button
