@@ -23,6 +23,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
   const [value, setValue] = useState("");
   const [messageId, setMessageId] = useState<number>(2);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDoneLoading, setIsDoneLoading] = useState(false);
   const [isStartLoading, setIsStartLoading] = useState(false);
@@ -34,6 +35,12 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
   useEffect(() => {
     scrollToBottom();
   }, [messages, error]);
+
+  useEffect(() => {
+    if (!isDoneLoading && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isDoneLoading]);
 
   const handleSubmit = async (
     e?: FormEvent<HTMLFormElement>,
@@ -181,6 +188,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
           maxLength={50}
           placeholder="주변 음식점에 대해 질문하기"
           disabled={isDoneLoading || !Boolean(restaurantsData)}
+          ref={inputRef}
         />
         <button
           disabled={isDoneLoading || !Boolean(restaurantsData)}
