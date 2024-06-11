@@ -6,6 +6,7 @@ import {
 import { StreamingTextResponse } from "ai";
 import getSession from "@/libs/session";
 import dbEdge from "@/libs/db";
+import { Document } from "@/types/apiTypes";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -45,7 +46,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const { message, data } = await request.json();
+    const { message, data }: { message: string; data: Document[] } =
+      await request.json();
 
     if (!message) {
       return new Response(
@@ -71,6 +73,14 @@ export async function POST(request: Request) {
       );
     }
 
+    const dataForAI = data.map((doc) => ({
+      place_name: doc.place_name,
+      address_name: doc.address_name,
+      category_name: doc.category_name,
+      distance: doc.distance,
+      phone: doc.phone,
+    }));
+
     const systemMessage = {
       role: ChatCompletionRequestMessageRoleEnum.System,
       content:
@@ -84,7 +94,7 @@ export async function POST(request: Request) {
 
     const assistantMessage = {
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
-      content: `Here are the restaurant data provided by the user: ${JSON.stringify(data)}. Please recommend a restaurant based on this data.`,
+      content: `Here are the restaurant data provided by the user: ${JSON.stringify(dataForAI)}. Please recommend a restaurant based on this data.`,
     };
 
     const response = await openai.createChatCompletion({
