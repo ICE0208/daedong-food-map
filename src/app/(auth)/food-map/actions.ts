@@ -1,6 +1,7 @@
 "use server";
 
 import db from "@/libs/db";
+import getSession from "@/libs/session";
 import { SearchKeywordResponse } from "@/types/apiTypes";
 import { redirect } from "next/navigation";
 
@@ -110,18 +111,46 @@ export const routeRestaurantDetail = async (
   redirect(`/restaurant/${data.id}`);
 };
 
+interface GenerateMessageResponse {
+  status: boolean;
+  message: string;
+}
+
 const GPT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
 export const generateMessage = async (
   message: string,
   data: SearchKeywordResponse["documents"] | undefined,
-): Promise<string | null> => {
-  if (!data) {
-    console.log("data가 없음.");
-    return null;
+): Promise<GenerateMessageResponse> => {
+  const session = await getSession();
+  const user = session.user;
+
+  if (!user) {
+    return { status: false, message: "해당 기능은 로그인이 필요합니다." };
   }
 
-  if (message.length > 50) return null;
+  const isSubscriber = Boolean(
+    await db.subscriber.findUnique({
+      where: {
+        userId: user.id,
+      },
+    }),
+  );
+  if (!isSubscriber) {
+    return {
+      status: false,
+      message:
+        "해당 기능은 유료 구독자만 이용할 수 있습니다. 관리자에게 문의하세요.",
+    };
+  }
+
+  if (!data) {
+    console.log("data가 없음.");
+    return { status: false, message: "식당 데이터를 불러오지 못했습니다." };
+  }
+
+  if (message.length > 50)
+    return { status: false, message: "메세지가 너무 깁니다." };
 
   try {
     const recommendations = data.map((doc) => ({
@@ -134,7 +163,7 @@ export const generateMessage = async (
     const systemMessage = {
       role: "system",
       content:
-        "You are an assistant that helps recommend restaurants based on user preferences. Do not include any links in your responses. Respond in Korean.",
+        "You are an assistant that helps recommend restaurants based on user preferences. Do not include any links or non-related phrases like 'bon appétit!' in your responses. Respond in Korean.",
     };
 
     const userMessage = {
@@ -144,7 +173,7 @@ export const generateMessage = async (
 
     const assistantMessage = {
       role: "assistant",
-      content: `Here is the restaurant data: ${JSON.stringify(recommendations)}. Based on the user's message, please recommend some restaurants without including any links.`,
+      content: `Here is the restaurant data: ${JSON.stringify(recommendations)}. Based on the user's message, please recommend some restaurants without including any links or non-related phrases.`,
     };
 
     const response = await fetch(GPT_API_ENDPOINT, {
@@ -162,9 +191,9 @@ export const generateMessage = async (
     const result = await response.json();
 
     // 응답에서 적절한 내용을 반환
-    return result.choices[0].message.content;
+    return { status: true, message: String(result.choices[0].message.content) };
   } catch (error) {
     console.error("Error generating message:", error);
-    return null;
+    return { status: false, message: "응답 생성 중 오류가 발생했습니다." };
   }
 };

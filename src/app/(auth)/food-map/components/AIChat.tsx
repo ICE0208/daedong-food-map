@@ -21,7 +21,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
   const [messages, setMessages] = useState<Message[]>(INIT_MESSAGES);
   const [value, setValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const scrollToBottom = () => {
@@ -35,8 +35,8 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimValue = value.trim();
-    if (trimValue.length === 0) return;
-    setIsError(false);
+    if (trimValue.length === 0) return setValue("");
+    setError(null);
     setIsLoading(true);
 
     const userMessage: Message = { type: "USER", content: trimValue };
@@ -46,11 +46,11 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
     const response = await generateMessage(trimValue, restaurantsData);
 
     setIsLoading(false);
-    if (response) {
-      const aiMessage: Message = { type: "AI", content: response };
+    if (response.status) {
+      const aiMessage: Message = { type: "AI", content: response.message };
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
     } else {
-      setIsError(true);
+      setError(response.message);
     }
   };
 
@@ -67,9 +67,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
             />
           ))}
           {isLoading && <Message type="AI" content="로딩중..." />}
-          {isError && (
-            <Message type="AI_ERROR" content="에러가 발생했습니다." />
-          )}
+          {error && <Message type="AI_ERROR" content={error} />}
         </>
         <div ref={messagesEndRef} />
       </div>
@@ -78,7 +76,7 @@ export default function AIChat({ restaurantsData }: AIChatProps) {
         onSubmit={handleSubmit}
       >
         <input
-          className="w-full rounded-lg border-2 px-2 py-1 font-semibold outline-none"
+          className="w-full rounded-lg border-2 px-2 py-1 font-medium outline-none"
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
           required
@@ -100,14 +98,14 @@ const Message = ({
   content: string;
 }) => {
   const messageStyles = {
-    AI: "bg-gray-400/70 self-start",
-    USER: "bg-amber-300/70 self-end text-end",
-    AI_ERROR: "bg-gray-400/70 self-start text-red-500",
+    AI: "bg-white self-start",
+    USER: "bg-amber-300/70 self-end",
+    AI_ERROR: "bg-white self-start text-red-500",
   };
 
   return (
     <div
-      className={`max-w-[80%] rounded-lg p-2 ${messageStyles[type]} bg- break-words font-medium`}
+      className={`max-w-[80%] rounded-lg px-3 py-2 ${messageStyles[type]} text-pretty break-words border-[1px] border-black/5 font-medium shadow-sm`}
     >
       {content}
     </div>
