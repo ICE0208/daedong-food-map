@@ -49,14 +49,14 @@ export async function POST(request: Request) {
 
     if (!message) {
       return new Response(
-        JSON.stringify({ status: false, message: "메시지가 필요합니다." }),
+        JSON.stringify({ status: false, message: "Message is required." }),
         { status: 400 },
       );
     }
 
     if (message.length > 50) {
       return new Response(
-        JSON.stringify({ status: false, message: "메세지가 너무 깁니다." }),
+        JSON.stringify({ status: false, message: "Message is too long." }),
         { status: 400 },
       );
     }
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       return new Response(
         JSON.stringify({
           status: false,
-          message: "식당 데이터를 불러오지 못했습니다.",
+          message: "Failed to load restaurant data.",
         }),
         { status: 400 },
       );
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     const systemMessage = {
       role: ChatCompletionRequestMessageRoleEnum.System,
       content:
-        "You are an assistant that helps recommend restaurants based on user preferences. Do not include any links or non-related phrases like 'bon appétit!' in your responses. Respond in Korean.",
+        "You are an assistant that recommends restaurants based on provided data. You must only use the provided restaurant data for recommendations and not create or fabricate any additional information. Respond in Korean and keep your response within 300 characters including spaces. Speak in a kind, gentle, and friendly tone using emojis and wave symbols (~), and occasionally say nice things to the user. If you don't know something or if the data is not available, say there are no such restaurants nearby in a friendly manner.",
     };
 
     const userMessage = {
@@ -91,20 +91,23 @@ export async function POST(request: Request) {
 
     const assistantMessage = {
       role: ChatCompletionRequestMessageRoleEnum.Assistant,
-      content: `어떤 음식이 드시고 싶나요? Here is the restaurant data: ${JSON.stringify(recommendations)}. Based on the user's message, please recommend some restaurants without including any links or non-related phrases.`,
+      content: `다음은 사용자가 제공한 식당 데이터입니다: ${JSON.stringify(recommendations)}. 이 데이터를 바탕으로 식당을 추천해 주세요. 응답은 띄어쓰기 포함 300자 이내로 작성해 주세요. `,
     };
 
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       stream: true,
       messages: [systemMessage, userMessage, assistantMessage],
+      temperature: 0.2, // Lower temperature for less creativity
+      max_tokens: 1024, // Limit the maximum number of tokens to avoid excessive length
+      top_p: 0.9, // Reduce the probability of less likely outputs
     });
 
     if (!response.body) {
       return new Response(
         JSON.stringify({
           status: false,
-          message: "응답 생성 중 오류가 발생했습니다.",
+          message: "Error occurred while generating response.",
         }),
         { status: 500 },
       );
@@ -132,7 +135,7 @@ export async function POST(request: Request) {
                   controller.enqueue(content);
                 }
               } catch (e) {
-                // JSON 파싱 오류 무시
+                // Ignore JSON parsing errors
               }
             }
             buffer = "";
@@ -148,7 +151,7 @@ export async function POST(request: Request) {
     return new Response(
       JSON.stringify({
         status: false,
-        message: "응답 생성 중 오류가 발생했습니다.",
+        message: "Error occurred while generating response.",
       }),
       { status: 500 },
     );
