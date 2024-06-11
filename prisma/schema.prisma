@@ -40,6 +40,8 @@ model User {
   talkLikes             TalkLike[]
   talkCommentLikes      TalkCommentLike[]
   talkCommentReplyLikes TalkCommentReplyLike[]
+
+  subscriber Subscriber?
 }
 
 model Restaurant {
@@ -164,4 +166,10 @@ model TalkCommentReplyLike {
   createdAt DateTime @default(now())
 
   @@unique([userId, talkCommentReplyId])
+}
+
+model Subscriber {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
 }
